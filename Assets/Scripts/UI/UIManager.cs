@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 //UI层级枚举
 public enum E_UI_Layer {
@@ -24,21 +25,31 @@ public class UIManager : BaseManager<UIManager>
     private Transform mid;
     private Transform top;
 
-
+    public Canvas canvas;
     public UIManager() {
         //去找Canvas（做成了预设体在Resources/UI下面）
-        GameObject obj= ResManager.GetInstance().Load<GameObject>("UI/Canvas");
-        Transform canvas = obj.transform;
+        GameObject obj= ResManager.GetInstance().Load<GameObject>("UI/Perfabs/Main/Canvas");
+        Canvas canvas = obj.GetComponent<Canvas>();
+        if (canvas != null)
+        {
+            CanvasScaler canvasScaler = canvas.GetComponent<CanvasScaler>();
+            if(canvasScaler != null)
+            {
+                canvasScaler.uiScaleMode = CanvasScaler.ScaleMode.ConstantPixelSize;
+            }
+        }
+
+        Transform canvasTransform = obj.transform;
         //创建Canvas，让其过场景的时候不被移除
         GameObject.DontDestroyOnLoad(obj);
 
         //找到各层
-        bot = canvas.Find("bot");
-        mid = canvas.Find("mid");
-        top = canvas.Find("top");
+        bot = canvasTransform.Find("bot");
+        mid = canvasTransform.Find("mid");
+        top = canvasTransform.Find("top");
 
         //加载EventSystem，有了它，按钮等组件才能响应
-        obj = ResManager.GetInstance().Load<GameObject>("UI/EventSystem");
+        obj = ResManager.GetInstance().Load<GameObject>("UI/Perfabs/Main/EventSystem");
 
         //创建Canvas，让其过场景的时候不被移除
         GameObject.DontDestroyOnLoad(obj);

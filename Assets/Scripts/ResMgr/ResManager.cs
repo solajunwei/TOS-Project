@@ -10,7 +10,7 @@ public class ResManager : BaseManager<ResManager>
     //同步加载资源
     public T Load<T>(string name) where T : Object
     {
-        T res = Resources.Load<T>(name); ;
+        T res = Resources.Load<T>(name);
         //如果对象是一个GameObject类型的，我把它实例化后，再返回出去直接使用。
         if (res is GameObject)
             return GameObject.Instantiate(res);
