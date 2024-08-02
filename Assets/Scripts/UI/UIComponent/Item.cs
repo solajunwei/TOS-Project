@@ -7,14 +7,24 @@ public struct ItemDate
 {
     public int index;
     public object data;
-    public DListView m_parent;
+    public UIList m_parent;
 }
 
-public class DItem : MonoBehaviour
+public class Item : MonoBehaviour
 {
+
+    public GameObject skin;
+
+    [HideInInspector]
     public int index;
+
+    [HideInInspector]
     public object data;
-    public DListView m_parent;
+
+    [HideInInspector]
+    public UIList m_parent;
+
+    [HideInInspector]
     public Dictionary<string, Transform> m_childName;
     public void refData()
     {
@@ -24,3 +34,4 @@ public class DItem : MonoBehaviour
         m_childName = new Dictionary<string, Transform>();
     }
 }
+

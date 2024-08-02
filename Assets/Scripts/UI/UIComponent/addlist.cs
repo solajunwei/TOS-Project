@@ -3,20 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class dataa
-{
+public class dataa {
     public string name;
     public int index;
 }
-public class Test : MonoBehaviour
+public class addlist : MonoBehaviour
 {
-    public DListView list;
-    public GameObject skin;
+    public UIList list;
+    // public GameObject skin;
     public Button btn;
     // Start is called before the first frame update
     void Start()
     {
-        list.setSkin = skin.GetComponent<RectTransform>();
+        // list.setSkin = skin.GetComponent<RectTransform>();
         List<dataa> dic = new List<dataa>();
         for (int i = 0; i < 10; i++)
         {
@@ -26,13 +25,15 @@ public class Test : MonoBehaviour
             dic.Add(date);
         }
         list.OnUpdateItem += change;
-        list.m_left = 10;
+        list.m_left = 0;
         list.m_top = 20;
         list.m_down = 30;
         list.setData(dic);
         List<dataa> dica = new List<dataa>();
         btn.onClick.AddListener(delegate ()
         {
+
+            Debug.Log(" AddListener === ");
             dica.Clear();
             for (int i = 0; i < 10; i++)
             {
@@ -44,8 +45,9 @@ public class Test : MonoBehaviour
             list.setData(dica);
         });
     }
-    void change(DItem item)
+    void change(Item item)
     {
+        Debug.Log(" change === ");
         Text text = item.m_childName["Text"].GetComponent<Text>();
         Button on_btn = item.m_childName["Button"].GetComponent<Button>();
         text.text = "xx" + (item.data as dataa).index + "--" + (item.data as dataa).name;
@@ -57,7 +59,7 @@ public class Test : MonoBehaviour
     }
     void Update()
     {
-
+        
     }
 }
 
