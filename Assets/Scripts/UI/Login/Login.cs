@@ -30,5 +30,6 @@ public class Login : BasePanel
     public void onExitGame()
     {
         Debug.Log("onExitGame");
+        Application.Quit();
     }
 }

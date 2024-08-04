@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-
-public class choseUser : MonoBehaviour
+public class Shop : MonoBehaviour
 {
     public UIList list;
     // public GameObject skin;
     public Button btn;
     // Start is called before the first frame update
+
+    public Transform ListBuy;
 
     void Start()
     {
@@ -42,6 +43,9 @@ public class choseUser : MonoBehaviour
             }
             list.setData(dica);
         });
+
+
+        EventManager.GetInstance().AddEventListener(MyConstants.SHOP_ICON_CELL, onAddCell);
     }
 
     void change(Item item)
@@ -61,7 +65,32 @@ public class choseUser : MonoBehaviour
     {
         UIManager.GetInstance().ShowPanel<BasePanel>("Perfabs/Login/selLevel");
 
-        //List<Dictionary<string, string>> str = ReadConfigManager.GetInstance().ReadConfig("UI/data/gameConfig.txt");
-        //Debug.Log(str);
+    }
+
+    public void Exit()
+    {
+        Debug.Log("sdfsafdsadfdd");
+        UIManager.GetInstance().HidePanel("Perfabs/Login/Image");
+        
+        UIManager.GetInstance().ShowPanel<BasePanel>("Perfabs/Login/Image");
+    }
+
+
+    public void onAddCell()
+    {
+        int nCount = ListBuy.childCount;
+        if (nCount > 3)
+        {
+            return;
+        }
+
+        GameObject obj = ResManager.GetInstance().Load<GameObject>("UI/Perfabs/Login/CellIcon");
+        int x = 0;
+        if (nCount > 0)
+            x = nCount * 220;
+
+        obj.transform.parent = ListBuy;
+        RectTransform transform = obj.GetComponent<RectTransform>();
+        transform.anchoredPosition = new Vector3(x, 0, 0);
     }
 }

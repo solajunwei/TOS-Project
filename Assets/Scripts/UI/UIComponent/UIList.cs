@@ -5,6 +5,11 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+public class dataa
+{
+    public string name;
+    public int index;
+}
 
 public class UIList : ScrollRect
 {
