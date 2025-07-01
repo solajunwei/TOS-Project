@@ -12,9 +12,6 @@ public class MonoController : MonoBehaviour
         //此对象不可移除
         //从而方便别的对象找到该物体，从而获取脚本，从而添加方法
         DontDestroyOnLoad(this.gameObject);
-        //UIManager.GetInstance().ShowPanel<BasePanel>("Perfabs/Login/Image");
-        //UIManager.GetInstance().ShowPanel<BasePanel>("Perfabs/Login/Image");
-
     }
     private void Update()
     {

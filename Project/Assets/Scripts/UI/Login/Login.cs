@@ -18,13 +18,12 @@ public class Login : BasePanel
 
     public void onStartGame()
     {
-        Debug.Log("onStartGame");
-        UIManager.GetInstance().ShowPanel<BasePanel>("Perfabs/Login/choseUser");
-        
-        //GameObject obj = ResManager.GetInstance().Load<GameObject>("UI/Perfabs/Login/choseUser");
-        //DontDestroyOnLoad(obj);
-        // 实例化预制体  
-        //Instantiate(obj, transform.position, Quaternion.identity);
+        UIManager.GetInstance().ShowPanel<BasePanel>("Perfabs/Login/SaveFile");
+    }
+
+    public void onSetting()
+    {
+
     }
 
     public void onExitGame()

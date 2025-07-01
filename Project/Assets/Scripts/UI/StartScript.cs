@@ -8,7 +8,7 @@ public class StartScript : MonoBehaviour
     void Start()
     {
         MonoMgr.GetInstance();
-        UIManager.GetInstance().ShowPanel<BasePanel>("Perfabs/Login/Image");
+        UIManager.GetInstance().ShowPanel<BasePanel>("Perfabs/Login/Login");
     }
 
     // Update is called once per frame
