@@ -13,6 +13,9 @@
 /[Pp]roject/[Ll]ibrary/
 /[Pp]roject/[Tt]emp/
 /[Pp]roject/[Oo]bj/
+/[Pp]roject/[Bb]uild/
+/[Pp]roject/[Bb]uilds/
+/[Pp]roject/[Ll]ogs/
 
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
