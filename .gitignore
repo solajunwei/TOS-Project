@@ -10,6 +10,9 @@
 /[Ll]ogs/
 /[Uu]ser[Ss]ettings/
 
+/[Pp]roject/[Ll]ibrary/
+
+
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
 /[Mm]emoryCaptures/
@@ -72,4 +75,4 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
 #其他的忽略
-/[Pp]roject/[Ll]ibrary/
+#/[Pp]roject/[Ll]ibrary/
