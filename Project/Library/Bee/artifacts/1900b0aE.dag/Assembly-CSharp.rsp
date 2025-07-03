@@ -359,6 +359,7 @@
 "Assets/Gen/demo/TbReward.cs"
 "Assets/Gen/Tables.cs"
 "Assets/Scripts/Base/BaseManager.cs"
+"Assets/Scripts/Base/GameConfig.cs"
 "Assets/Scripts/Base/UIComponent.cs"
 "Assets/Scripts/Event/EventData.cs"
 "Assets/Scripts/Event/EventManager.cs"
