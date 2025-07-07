@@ -13,6 +13,7 @@ public class StartScript : MonoBehaviour
         GameConfig.GetInstance().getTables();
         MonoMgr.GetInstance();
         UIManager.GetInstance().ShowPanel<BasePanel>("Perfabs/Login/Login");
+        UIManager.GetInstance().ShowPanel<BasePanel>("Perfabs/Main/Setting", E_UI_Layer.Top);
     }
 
     // Update is called once per frame

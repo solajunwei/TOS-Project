@@ -18,7 +18,7 @@ public class Login : BasePanel
 
     public void onStartGame()
     {
-        UIManager.GetInstance().ShowPanel<BasePanel>("Perfabs/Login/SaveFile");
+        UIManager.GetInstance().ShowPanel<BasePanel>("Perfabs/Login/SelLevel");
     }
 
     public void onSetting()

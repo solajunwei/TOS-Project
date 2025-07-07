@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -57,7 +58,7 @@ public class UIManager : BaseManager<UIManager>
     //public onAv
        
     public void ShowPanel<T>(string panelName,
-                        E_UI_Layer layer=E_UI_Layer.Top,
+                        E_UI_Layer layer=E_UI_Layer.Mit,
                         UnityAction<T> callback=null) where T:BasePanel {
         //已经显示了此面板
         if (panelDic.ContainsKey(panelName))
@@ -112,4 +113,9 @@ public class UIManager : BaseManager<UIManager>
             panelDic.Remove(panelName);
         }
     }
+
+    //virtual public void HideMe()
+    //{
+    //    //OnDestroy();
+    //}
 }

@@ -18,7 +18,6 @@ public sealed partial class Reward : Luban.BeanBase
     public Reward(JSONNode _buf) 
     {
         { if(!_buf["id"].IsNumber) { throw new SerializationException(); }  Id = _buf["id"]; }
-        { if(!_buf["name"].IsString) { throw new SerializationException(); }  Name = _buf["name"]; }
         { if(!_buf["count"].IsNumber) { throw new SerializationException(); }  Count = _buf["count"]; }
     }
 
@@ -31,10 +30,6 @@ public sealed partial class Reward : Luban.BeanBase
     /// id
     /// </summary>
     public readonly int Id;
-    /// <summary>
-    /// 名称
-    /// </summary>
-    public readonly string Name;
     /// <summary>
     /// 个数
     /// </summary>
@@ -51,7 +46,6 @@ public sealed partial class Reward : Luban.BeanBase
     {
         return "{ "
         + "id:" + Id + ","
-        + "name:" + Name + ","
         + "count:" + Count + ","
         + "}";
     }
