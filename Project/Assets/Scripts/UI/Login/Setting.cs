@@ -2,15 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Setting : MonoBehaviour
+public class Setting : BasePanel
 {
     public void onClickSetting()
     {
         Debug.Log("onClickSetting");
     }
 
-    public void HideMe()
+    public void onCloseSetting()
     {
-        Destroy(gameObject);
+        UIManager.Instance.HidePanel("Perfabs/Main/Setting");
     }
 }

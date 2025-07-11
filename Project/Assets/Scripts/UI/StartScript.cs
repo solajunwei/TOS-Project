@@ -10,10 +10,10 @@ public class StartScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GameConfig.GetInstance().getTables();
-        MonoMgr.GetInstance();
-        UIManager.GetInstance().ShowPanel<BasePanel>("Perfabs/Login/Login");
-        UIManager.GetInstance().ShowPanel<BasePanel>("Perfabs/Main/Setting", E_UI_Layer.Top);
+        GameConfig.Instance.getTables();
+        var mono = MonoMgr.Instance;
+        UIManager.Instance.ShowPanel<Login>("Perfabs/Login/Login");
+        UIManager.Instance.ShowPanel<Setting>("Perfabs/Main/Setting", E_UI_Layer.Top);
     }
 
     // Update is called once per frame

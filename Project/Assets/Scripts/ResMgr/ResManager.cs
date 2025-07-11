@@ -22,7 +22,7 @@ public class ResManager : BaseManager<ResManager>
     public void LoadAsync<T>(string name, UnityAction<T> callback) where T : Object
     {
         //开启异步加载的协程
-        MonoMgr.GetInstance().StartCoroutine(ReallyLoadAsync<T>(name, callback));
+        MonoMgr.Instance.StartCoroutine(ReallyLoadAsync<T>(name, callback));
     }
 
     private IEnumerator ReallyLoadAsync<T>(string name, UnityAction<T> callback) where T : Object

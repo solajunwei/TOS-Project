@@ -23,7 +23,7 @@ public class UIList : ScrollRect
     private int endIndex;
 
     /// <summary>
-    /// 设置list子控件皮肤
+    /// 设置list子控件皮�?
     /// </summary>
     private RectTransform m_Skin;
 
@@ -37,15 +37,15 @@ public class UIList : ScrollRect
 
 
     /// <summary>
-    /// 宽高改变时触发
+    /// 宽高改变时触�?
     /// </summary>
     public event Action OnChangeViewWH;
     /// <summary>
-    /// 数据跟新时调用
+    /// 数据跟新时调�?
     /// </summary>
     public event Action<Item> OnUpdateItem;
     /// <summary>
-    /// 距离顶部
+    /// 距�?�顶�?
     /// </summary>
     private float _m_top;
     public float m_top
@@ -53,7 +53,7 @@ public class UIList : ScrollRect
         set { _m_top = value; }
     }
     /// <summary>
-    /// 距离底部
+    /// 距�?�底�?
     /// </summary>
     private float _m_down;
     public float m_down
@@ -61,7 +61,7 @@ public class UIList : ScrollRect
         set { _m_down = value; }
     }
     /// <summary>
-    /// 距离左部
+    /// 距�?�左�?
     /// </summary>
     private float _m_left;
     public float m_left
@@ -78,7 +78,7 @@ public class UIList : ScrollRect
         set { _Spacing = value; }
     }
     /// <summary>
-    /// 文本测量高度和文本测量宽度
+    /// 文本测量高度和文�?测量宽度
     /// </summary>
     private Vector2 _sizeData;
     public Vector2 sizeData
@@ -114,27 +114,27 @@ public class UIList : ScrollRect
         {
             m_width = rectTr.sizeDelta.x;
             m_height = rectTr.sizeDelta.y;
-            //调用宽高改变时触发
+            //调用宽高改变时触�?
             OnChangeViewWH.DynamicInvoke();
         }
     }
     
     /// <summary>
-    /// 设置数据源
+    /// 设置数据�?
     /// </summary>
     /// <param name="datas"></param>
     public void setData<T>(List<T> datas)
     {
         if (m_Skin == null)
         {
-            Debug.LogError("Item皮肤没有设置");
+            Debug.LogError("Item�?肤没有�?�置");
         }
-        //初始化数据
+        //初�?�化数据
         this.m_datas.Clear();
         this.content.localPosition = new Vector3(this.content.localPosition.x, 0, 0);
         startIndex = 0;
         int len = datas.Count;
-        //计算容器宽度+距离底部的距离
+        //计算容器宽度+距�?�底部的距�??
         _sizeData = new Vector2(m_Skin.sizeDelta.x, (m_Skin.sizeDelta.y * len + _Spacing * len - _Spacing) + _m_down + _m_top);
         //更新数据
         for (int i = 0; i < datas.Count; i++)
@@ -168,14 +168,14 @@ public class UIList : ScrollRect
         return map;
     }
     /// <summary>
-    /// 宽高发生改变时
+    /// 宽高发生改变�?
     /// </summary>
     public void ChangeViewWH()
     {
         //向上取整得到数量
         int colunm = Mathf.CeilToInt((m_height + _Spacing) / (m_Skin.sizeDelta.y + _Spacing));
         endIndex = startIndex + colunm;
-        //超出的删除
+        //超出的删�?
         if (comList.Count > colunm + 1 && colunm > 0)
         {
             for (int s = colunm + 1; s < comList.Count; s++)
@@ -197,23 +197,23 @@ public class UIList : ScrollRect
                 //添加item
                 skin.gameObject.AddComponent<Item>();
                 comList.Add(skin);
-                //设置父节点
+                //设置父节�?
                 skin.SetParent(this.content, false);
             }
         }
         //更新所有item
         updateItem();
-        //赋值文本测量高度
+        //赋值文�?测量高度
         this.content.sizeDelta = new Vector2(this.content.sizeDelta.x, _sizeData.y);
     }
     /// <summary>
-    /// 数据初始化
+    /// 数据初�?�化
     /// </summary>
     private void updateItem()
     {
         for (int i = 0; i < comList.Count; i++)
         {
-            //计算item的坐标，以距离左边和距离上边为基准
+            //计算item的坐标，以距离左边和距�?�上边为基准
             comList[i].localPosition = new Vector3(_m_left, -(_m_top + i * (m_Skin.sizeDelta.y + _Spacing)), 0);
             updataView(comList[i], i);
         }
@@ -233,7 +233,7 @@ public class UIList : ScrollRect
         OnUpdateItem.DynamicInvoke(data);
     }
     /// <summary>
-    /// 滑动改变时
+    /// 滑动改变�?
     /// </summary>
     /// <param name="pos"></param>
     private void OnChange(Vector2 pos)

@@ -18,8 +18,8 @@ public enum E_UI_Layer {
 //提供给外部 显示和隐藏
 public class UIManager : BaseManager<UIManager>
 {
-    public Dictionary<string, BasePanel> panelDic 
-        = new Dictionary<string, BasePanel>();
+    public Dictionary<string, UIComponent> panelDic 
+        = new Dictionary<string, UIComponent>();
 
     //这是几个UI面板
     private Transform bot;
@@ -29,7 +29,7 @@ public class UIManager : BaseManager<UIManager>
     public Canvas canvas;
     public UIManager() {
         //去找Canvas（做成了预设体在Resources/UI下面）
-        GameObject obj= ResManager.GetInstance().Load<GameObject>("UI/Perfabs/Main/Canvas");
+        GameObject obj= ResManager.Instance.Load<GameObject>("UI/Perfabs/Main/Canvas");
         Canvas canvas = obj.GetComponent<Canvas>();
         if (canvas != null)
         {
@@ -50,7 +50,7 @@ public class UIManager : BaseManager<UIManager>
         top = canvasTransform.Find("top");
 
         //加载EventSystem，有了它，按钮等组件才能响应
-        obj = ResManager.GetInstance().Load<GameObject>("UI/Perfabs/Main/EventSystem");
+        obj = ResManager.Instance.Load<GameObject>("UI/Perfabs/Main/EventSystem");
 
         //创建Canvas，让其过场景的时候不被移除
         GameObject.DontDestroyOnLoad(obj);
@@ -59,7 +59,7 @@ public class UIManager : BaseManager<UIManager>
        
     public void ShowPanel<T>(string panelName,
                         E_UI_Layer layer=E_UI_Layer.Mit,
-                        UnityAction<T> callback=null) where T:BasePanel {
+                        UnityAction<T> callback=null) where T:UIComponent {
         //已经显示了此面板
         if (panelDic.ContainsKey(panelName))
         {
@@ -69,7 +69,7 @@ public class UIManager : BaseManager<UIManager>
                 callback(panelDic[panelName] as T);
             return;
         }
-        ResManager.GetInstance().LoadAsync<GameObject>("UI/"+panelName,(obj)=> {
+        ResManager.Instance.LoadAsync<GameObject>("UI/"+panelName,(obj)=> {
             //把它作为Canvas的子对象
             //并且设置它的相对位置
             //找到父对象
@@ -109,13 +109,8 @@ public class UIManager : BaseManager<UIManager>
         if (panelDic.ContainsKey(panelName)) {
             //调用重写方法，具体内容自己添加
             panelDic[panelName].HideMe();
-            GameObject.Destroy(panelDic[panelName].gameObject);
+            //GameObject.Destroy(panelDic[panelName].gameObject);
             panelDic.Remove(panelName);
         }
     }
-
-    //virtual public void HideMe()
-    //{
-    //    //OnDestroy();
-    //}
 }

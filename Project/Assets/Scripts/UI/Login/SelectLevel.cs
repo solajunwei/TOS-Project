@@ -6,14 +6,9 @@ public class SelectLevel : BasePanel
 {
     public void onBack()
     {
-        UIManager.GetInstance().HidePanel("Perfabs/Login/SelectLevel");
+        UIManager.Instance.HidePanel("Perfabs/Login/SelectLevel");
     }
 
-    public void HideMe()
-    {
-        Destroy(gameObject);
-    }
-    
     public void onInGame()
     {
         Debug.Log("Ω¯»Î”Œœ∑");

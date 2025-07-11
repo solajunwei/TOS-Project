@@ -6,12 +6,15 @@ public class BaseManager<T> where T:new()
 {
     private static T _instance;
 
-    public static T GetInstance()
+    public static T Instance
     {
-        if(null ==_instance)
+        get
         {
-            _instance = new T();
+            if (null == _instance)
+            {
+                _instance = new T();
+            }
+            return _instance;
         }
-        return _instance;
     }
 }

@@ -18,28 +18,24 @@ public class SaveFile : BasePanel
 
     public void onBack()
     {
-        UIManager.GetInstance().HidePanel("Perfabs/Login/SaveFile");
+        UIManager.Instance.HidePanel("Perfabs/Login/SaveFile");
     }
 
-    public void HideMe()
-    {
-        Destroy(gameObject);
-    }
 
     // ¼òµ¥
     public void onOpenSaveEase()
     {
-        UIManager.GetInstance().ShowPanel<BasePanel>("Perfabs/Login/SelectLevel");
+        UIManager.Instance.ShowPanel<SelectLevel>("Perfabs/Login/SelectLevel");
     }
 
     // À§ÄÑ
     public void onOpenSaveDifficulty()
     {
-        UIManager.GetInstance().ShowPanel<BasePanel>("Perfabs/Login/SelectLevel");
+        UIManager.Instance.ShowPanel<SelectLevel>("Perfabs/Login/SelectLevel");
     }
 
     public void onOpenNewGame()
     {
-        UIManager.GetInstance().ShowPanel<BasePanel>("Perfabs/Login/SelectLevel");
+        UIManager.Instance.ShowPanel<SelectLevel>("Perfabs/Login/SelectLevel");
     }    
 }

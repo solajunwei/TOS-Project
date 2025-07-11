@@ -7,7 +7,7 @@ using UnityEngine.UI;
 //面板基类
 //找到所有自己面板下的控件对象
 //提供显式/隐藏的行为
-public class BasePanel : MonoBehaviour
+public class BasePanel : UIComponent
 {
     //通过里式转换原则，来存储所有的UI控件
     private Dictionary<string, List<UIBehaviour>> controlDic 
@@ -53,10 +53,11 @@ public class BasePanel : MonoBehaviour
     }
     //让子类重写（覆盖）此方法，来实现UI的隐藏与出现
 
-    public virtual void ShowMe() {
+    public override void ShowMe() {
 
     }
-    public virtual void HideMe() {
-
+    public override void HideMe() {
+        base.HideMe();
+        Destroy(gameObject);
     }
 }
