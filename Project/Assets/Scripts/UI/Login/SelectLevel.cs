@@ -11,6 +11,6 @@ public class SelectLevel : BasePanel
 
     public void onInGame()
     {
-        Debug.Log("½øÈëÓÎÏ·");
+        UIManager.Instance.ShowPanel<Pet>("Perfabs/Pet/Pet");
     }
 }

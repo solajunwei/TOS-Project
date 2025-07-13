@@ -14,9 +14,6 @@ public interface IListItemData
 public class ExampleItemData : IListItemData
 {
     public int Id { get; set; }
-    public string Title { get; set; }
-    public string Description { get; set; }
-
     public int GetItemId() => Id;
 }
 

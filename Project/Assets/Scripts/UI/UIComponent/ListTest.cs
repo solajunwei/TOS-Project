@@ -33,15 +33,14 @@ public class ListViewExample : MonoBehaviour
             dataList.Add(new ExampleItemData
             {
                 Id = i,
-                Title = $"Item {i}",
-                Description = $"This is description for item {i}"
+               
             });
         }
     }
     
     private void OnItemClicked(int index, IListItemData data)
     {
-        Debug.Log($"Clicked on item {index}: {((ExampleItemData)data).Title}");
+        //Debug.Log($"Clicked on item {index}: {((ExampleItemData)data).Title}");
         listView.ScrollToItem(index);
     }
     
@@ -54,8 +53,7 @@ public class ListViewExample : MonoBehaviour
         dataList.Add(new ExampleItemData
         {
             Id = newId,
-            Title = str,
-            Description = $"New item added at runtime {newId}"
+          
         });
         
         listView.SetDataSource(dataList.Cast<IListItemData>().ToList());

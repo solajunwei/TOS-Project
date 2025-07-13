@@ -18,16 +18,11 @@ public class ListItemView : MonoBehaviour
         UpdateView(data);
     }
 
-    [SerializeField] private Text titleText;
-    [SerializeField] private Text descriptionText;
-    [SerializeField] private Image backgroundImage;
-
     private void Awake()
     {
     }
 
     public void UpdateView(IListItemData data)
     {
-        Debug.Log("UpdateView === ");
     }
 }
