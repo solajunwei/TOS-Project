@@ -5,11 +5,6 @@ using System.Reflection;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PetInfo : ExampleItemData
-{
-    public pet petInfo;
-    public Pet Delegate;
-}
 
 // 列表项视图基类
 public class PetCell : ListItemView
@@ -20,18 +15,20 @@ public class PetCell : ListItemView
 
     public override void Initialize(int index, IListItemData data)
     {
-        //base.Initialize(index, data);
-        UpdateView(data);
+        base.Initialize(index, data);
     }
 
-    public void UpdateView(IListItemData data)
+    protected override void UpdateView(IListItemData data)
     {
-        if(null != data)
+        if(data is PetInfo petinfo)
         {
-            _dataInfo = data as PetInfo;
+            _dataInfo = petinfo;
+            _petName.text = _dataInfo.petInfo.Name;
         }
-        
-        _petName.text = _dataInfo.petInfo.Name;
+        else
+        {
+            Debug.LogError($"PetCell Invalid data type. Expected PetInfo, got {data?.GetType().Name ?? "null"}");
+        }
     }
 
     public void onClickShowInfo()
@@ -42,10 +39,9 @@ public class PetCell : ListItemView
             if (null != petInfo)
             {
                 // 需要检查是否存在函数
-                petInfo.setPetId(_dataInfo.petInfo);
+                petInfo.setPetId(_dataInfo);
             }
             
         }
-        Debug.Log("sssssssssssssssss");
     }
 }

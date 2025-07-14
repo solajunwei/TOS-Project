@@ -5,10 +5,22 @@ using System.Linq;
 using cfg;
 
 
+public class PetInfo : ExampleItemData
+{
+    public pet petInfo;
+    public Pet Delegate;
+    public bool isOnBattle = false;
+}
+
 public class Pet : BasePanel
 {
-    [SerializeField] private ListView listView;
+    [SerializeField]
+    private ListView listView;
 
+    [SerializeField]
+    private ListView goListView;
+
+    public Button _goButton;
     // 技能
     public Text _Skill1;
     public Text _Skill2;
@@ -28,10 +40,19 @@ public class Pet : BasePanel
     private Tbpet _Pet;
     private TbpetAttri _PetAttri;
     private Tbskills _Skills;
-    private pet _ShowPetInfo;
+    private PetInfo _ShowPetInfo;
     private int _SelElementId;
 
-    private List<PetInfo> m_pPetList = new List<PetInfo>();
+    /// <summary>
+    /// 展示宠物列表
+    /// </summary>
+    private List<PetInfo> _PetList = new List<PetInfo>();
+
+    /// <summary>
+    /// 上阵宠物列表
+    /// </summary>
+    private List<PetInfo> _GoBattle = new List<PetInfo>();
+
     private void Start()
     {
         cfg.Tables tb = GameConfig.Instance.getTables();
@@ -46,7 +67,7 @@ public class Pet : BasePanel
         // Test();
     }
 
-    public void setPetId(pet petInfo)
+    public void setPetId(PetInfo petInfo)
     {
         _ShowPetInfo = petInfo;
         updateView();
@@ -54,34 +75,45 @@ public class Pet : BasePanel
 
     public void updateView()
     {
-        int elementId = _ShowPetInfo.Type;
+        pet petInfo = _ShowPetInfo.petInfo;
+
+        int elementId = petInfo.Type;
         _Element.text = _PetAttri.Get(elementId).Name;
 
-        int petSkillId1 = _ShowPetInfo.Skill1;
+        int petSkillId1 = petInfo.Skill1;
         skills skill1 = _Skills.Get(petSkillId1);
         _Skill1.text = skill1.Name;
         _Attri1.text = skill1.Attr;
 
-        int petSkillId2 = _ShowPetInfo.Skill2;
+        int petSkillId2 = petInfo.Skill2;
         skills skill2 = _Skills.Get(petSkillId2);
         _Skill2.text = skill2.Name;
         _Attri2.text = skill2.Attr;
 
-        int petSkillId3 = _ShowPetInfo.Skill3;
+        int petSkillId3 = petInfo.Skill3;
         skills skill3 = _Skills.Get(petSkillId3);
         _Skill3.text = skill3.Name;
         _Attri3.text = skill3.Attr;
 
-        int petSkillId4 = _ShowPetInfo.Skill4;
+        int petSkillId4 = petInfo.Skill4;
         skills skill4 = _Skills.Get(petSkillId4);
         _Skill4.text = skill4.Name;
         _Attri4.text = skill4.Attr;
+
+        if (_ShowPetInfo.isOnBattle)
+        {
+            _goButton.interactable = false;
+        }
+        else
+        {
+            _goButton.interactable = true;
+        }
 
     }
     public void showPetListByElement(int tag, bool isFirstIn = false)
     {
         _SelElementId = tag;
-        m_pPetList.Clear();
+        _PetList.Clear();
         listView.ClearItems();
         PetInfo info = null;
         for (int i = 0; i < _Pet.DataList.Count; i++)
@@ -92,15 +124,15 @@ public class Pet : BasePanel
                 info.Id = i;
                 info.petInfo = _Pet.DataList[i];
                 info.Delegate = this;
-                m_pPetList.Add(info);
+                _PetList.Add(info);
             }
         }
 
-        listView.SetDataSource(m_pPetList.Cast<IListItemData>().ToList());
-        info = m_pPetList.FirstOrDefault();
+        listView.SetDataSource(_PetList.Cast<IListItemData>().ToList());
+        info = _PetList.FirstOrDefault();
         if (info != null)
         {
-            setPetId(info.petInfo);
+            setPetId(info);
         }
         else if (tag < 5 && isFirstIn)
         {
@@ -112,7 +144,7 @@ public class Pet : BasePanel
     {
         if (tag == _SelElementId)
             return;
-        
+
         showPetListByElement(tag);
     }
 
@@ -125,6 +157,19 @@ public class Pet : BasePanel
     public void onClickBack()
     {
         UIManager.Instance.HidePanel("Perfabs/Pet/Pet");
+    }
+
+    public void onGoBattle()
+    {
+        Debug.Log("onGoButtle");
+        if (_ShowPetInfo.isOnBattle)
+        {
+            return;
+        }
+         _goButton.interactable = false;
+        _ShowPetInfo.isOnBattle = true;
+        _GoBattle.Add(_ShowPetInfo);
+        goListView.SetDataSource(_GoBattle.Cast<IListItemData>().ToList());
     }
 
 

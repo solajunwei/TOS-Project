@@ -295,8 +295,8 @@ MonoBehaviour:
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
-    m_ColorMultiplier: 1
+    m_DisabledColor: {r: 0.31446534, g: 0.2976543, b: 0.2976543, a: 0.5019608}
+    m_ColorMultiplier: 1.08
     m_FadeDuration: 0.1
   m_SpriteState:
     m_HighlightedSprite: {fileID: 0}
@@ -314,9 +314,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: Login, Assembly-CSharp
-        m_MethodName: onSetting
+      - m_Target: {fileID: 4942861815947976442}
+        m_TargetAssemblyTypeName: Pet, Assembly-CSharp
+        m_MethodName: onGoBattle
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1959,7 +1959,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6754290252048912247}
-  - component: {fileID: 2770648149990701971}
   m_Layer: 0
   m_Name: GoPet
   m_TagString: Untagged
@@ -1987,19 +1986,6 @@ RectTransform:
   m_AnchoredPosition: {x: 46, y: -234}
   m_SizeDelta: {x: 1200, y: 230}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &2770648149990701971
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2626328397967704679}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 47fc05e7a52b32f4c8d74d03dcd9e946, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  listView: {fileID: 7792687823471964450}
 --- !u!1 &2826445107843064378
 GameObject:
   m_ObjectHideFlags: 0
@@ -3477,6 +3463,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   listView: {fileID: 5045365486497961027}
+  goListView: {fileID: 7792687823471964450}
+  _goButton: {fileID: 6958370597833606315}
   _Skill1: {fileID: 3641206796894873817}
   _Skill2: {fileID: 963856141812369759}
   _Skill3: {fileID: 5096470752547356193}
@@ -4881,7 +4869,7 @@ MonoBehaviour:
   content: {fileID: 6552396277925323715}
   verticalScrollbar: {fileID: 0}
   horizontalScrollbar: {fileID: 0}
-  itemPrefab: {fileID: 5350275096093845111, guid: ff4137f2524167f41b70629b098f157d, type: 3}
+  itemPrefab: {fileID: 2493062489847095251, guid: ff4137f2524167f41b70629b098f157d, type: 3}
   itemSize: {x: 200, y: 230}
   spacing: {x: 0, y: 0}
   bufferItems: 5

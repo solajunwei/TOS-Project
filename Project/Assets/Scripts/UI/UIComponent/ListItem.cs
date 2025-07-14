@@ -15,14 +15,11 @@ public class ListItemView : MonoBehaviour
     public virtual void Initialize(int index, IListItemData data)
     {
         ItemIndex = index;
-        UpdateView(data);
+        this.UpdateView(data);
     }
 
-    private void Awake()
+    protected virtual void UpdateView(IListItemData data)
     {
-    }
 
-    public void UpdateView(IListItemData data)
-    {
     }
 }
