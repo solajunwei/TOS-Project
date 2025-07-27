@@ -565,7 +565,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2753422729630280367}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1204445049787783197}
+        m_TargetAssemblyTypeName: Login, Assembly-CSharp
+        m_MethodName: onClickTitleMap
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &3990912812241428710
 GameObject:
   m_ObjectHideFlags: 0
@@ -792,6 +804,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a270878ca3555c24fbcce2e0c32bc3cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TitleMapPrefab: {fileID: 5111910648314289100, guid: 5131bd11be9df4f489bbfb6d095c5e7a, type: 3}
 --- !u!1 &6897468275008325955
 GameObject:
   m_ObjectHideFlags: 0

@@ -173,6 +173,22 @@ public class Pet : BasePanel
     }
 
 
+    /// <summary>
+    /// ³ö»÷
+    /// </summary>
+    public void onBattle()
+    {
+        foreach (PetInfo petinfo in _GoBattle)
+        {
+            PetModel.Instance.AddOnBattlePet(petinfo.petInfo);
+        }
+        Debug.Log("³ö»÷");
+
+        UnityEngine.SceneManagement.SceneManager.LoadScene("BattleScene");
+        UIManager.Instance.SetCanvasVisible(false);
+    }
+
+
 
 
 

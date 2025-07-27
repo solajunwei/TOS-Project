@@ -25,15 +25,15 @@ public class UIManager : BaseManager<UIManager>
     private Transform bot;
     private Transform mid;
     private Transform top;
-
+    private Canvas _canvas;
     public Canvas canvas;
     public UIManager() {
         //去找Canvas（做成了预设体在Resources/UI下面）
         GameObject obj= ResManager.Instance.Load<GameObject>("UI/Perfabs/Main/Canvas");
-        Canvas canvas = obj.GetComponent<Canvas>();
-        if (canvas != null)
+        _canvas = obj.GetComponent<Canvas>();
+        if (_canvas != null)
         {
-            CanvasScaler canvasScaler = canvas.GetComponent<CanvasScaler>();
+            CanvasScaler canvasScaler = _canvas.GetComponent<CanvasScaler>();
             if(canvasScaler != null)
             {
                 canvasScaler.uiScaleMode = CanvasScaler.ScaleMode.ConstantPixelSize;
@@ -112,5 +112,10 @@ public class UIManager : BaseManager<UIManager>
             //GameObject.Destroy(panelDic[panelName].gameObject);
             panelDic.Remove(panelName);
         }
+    }
+
+    public void SetCanvasVisible(bool visible)
+    {
+        _canvas.enabled = visible;
     }
 }

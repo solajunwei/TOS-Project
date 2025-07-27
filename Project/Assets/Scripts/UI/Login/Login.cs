@@ -23,7 +23,13 @@ public class Login : BasePanel
 
     public void onSetting()
     {
+        
+    }
 
+    public void onClickTitleMap()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene("BattleScene");
+        UIManager.Instance.SetCanvasVisible(false);
     }
 
     public void onExitGame()
