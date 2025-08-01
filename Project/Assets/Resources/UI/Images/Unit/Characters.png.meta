@@ -97,15 +97,15 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Characters_0
+      name: 11001
       rect:
         serializedVersion: 2
-        x: 6
+        x: 9
         y: 0
-        width: 22
+        width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -118,15 +118,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Characters_1
+      name: 11002
       rect:
         serializedVersion: 2
-        x: 40
+        x: 41
         y: 0
-        width: 22
+        width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -139,15 +139,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Characters_2
+      name: 11003
       rect:
         serializedVersion: 2
-        x: 71
+        x: 73
         y: 0
-        width: 22
+        width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -170,9 +170,9 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Characters_0: 46228650
-      Characters_1: -699951142
-      Characters_2: 492706833
+      11001: 46228650
+      11002: -699951142
+      11003: 492706833
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

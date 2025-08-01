@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Linq;
 using cfg;
+using UnityEngine.EventSystems;
 
 
 public class PetInfo : ExampleItemData
@@ -184,8 +185,7 @@ public class Pet : BasePanel
         }
         Debug.Log("³ö»÷");
 
-        UnityEngine.SceneManagement.SceneManager.LoadScene("BattleScene");
-        UIManager.Instance.SetCanvasVisible(false);
+        EventManager.Instance.EventTrigger(MyConstants.start_game);
     }
 
 

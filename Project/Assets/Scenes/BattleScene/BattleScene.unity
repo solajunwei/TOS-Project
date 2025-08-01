@@ -829,7 +829,10 @@ MonoBehaviour:
   HeroUnit: {fileID: 1511511986}
   EnemyUnit: {fileID: 451852921}
   UnitPrefab: {fileID: 5603185484129883535, guid: b3945871086e7e947b4bab49228a30fe, type: 3}
-  fDistance: 2.5
+  UnitKillPrefab: {fileID: 5603185484129883535, guid: 138ad75ee327a4f42b742e24326beea3, type: 3}
+  fDistance: 3
+  fAnimTime: 60
+  fSpeed: 3
 --- !u!1001 &1387579512
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1179,6 +1182,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 271627296}
     m_Modifications:
+    - target: {fileID: 823957328806802417, guid: dc7167fc055a858428453a01f0f2952e, type: 3}
+      propertyPath: _iamges.Array.size
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 8285958867829216529, guid: dc7167fc055a858428453a01f0f2952e, type: 3}
       propertyPath: m_Name
       value: BattleBtns

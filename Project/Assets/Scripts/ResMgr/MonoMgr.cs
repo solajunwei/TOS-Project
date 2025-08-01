@@ -12,6 +12,7 @@ public class MonoMgr : BaseManager<MonoMgr>
         GameObject obj = new GameObject("MonoController");
         //给物体添加组件
         controller = obj.AddComponent<MonoController>();
+        obj.AddComponent<Game>();
     }
     public void AddUpdateListener(UnityAction func)
     {

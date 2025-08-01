@@ -28,8 +28,7 @@ public class Login : BasePanel
 
     public void onClickTitleMap()
     {
-        UnityEngine.SceneManagement.SceneManager.LoadScene("BattleScene");
-        UIManager.Instance.SetCanvasVisible(false);
+        EventManager.Instance.EventTrigger(MyConstants.start_game);
     }
 
     public void onExitGame()
