@@ -15,15 +15,15 @@ namespace cfg
 public partial class Tables
 {
     public demo.TbReward TbReward {get; }
-    public Tbpet Tbpet {get; }
     public TbpetAttri TbpetAttri {get; }
+    public TbpetConfig TbpetConfig {get; }
     public Tbskills Tbskills {get; }
 
     public Tables(System.Func<string, JSONNode> loader)
     {
         TbReward = new demo.TbReward(loader("demo_tbreward"));
-        Tbpet = new Tbpet(loader("tbpet"));
         TbpetAttri = new TbpetAttri(loader("tbpetattri"));
+        TbpetConfig = new TbpetConfig(loader("tbpetconfig"));
         Tbskills = new Tbskills(loader("tbskills"));
         ResolveRef();
     }
@@ -31,8 +31,8 @@ public partial class Tables
     private void ResolveRef()
     {
         TbReward.ResolveRef(this);
-        Tbpet.ResolveRef(this);
         TbpetAttri.ResolveRef(this);
+        TbpetConfig.ResolveRef(this);
         Tbskills.ResolveRef(this);
     }
 }

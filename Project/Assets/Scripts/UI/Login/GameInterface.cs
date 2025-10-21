@@ -19,6 +19,6 @@ public class GameInterface : MonoBehaviour
     public void ShowShop()
     {
         Debug.Log("ShowShop ==== ");
-        UIManager.Instance.ShowPanel<BasePanel>("Perfabs/Login/Shop");
+        //UIManager.Instance.ShowPanel<BasePanel>("Perfabs/Login/Shop");
     }
 }

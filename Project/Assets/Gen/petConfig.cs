@@ -13,22 +13,27 @@ using SimpleJSON;
 
 namespace cfg
 {
-public sealed partial class pet : Luban.BeanBase
+public sealed partial class petConfig : Luban.BeanBase
 {
-    public pet(JSONNode _buf) 
+    public petConfig(JSONNode _buf) 
     {
         { if(!_buf["id"].IsNumber) { throw new SerializationException(); }  Id = _buf["id"]; }
         { if(!_buf["name"].IsString) { throw new SerializationException(); }  Name = _buf["name"]; }
+        { if(!_buf["type"].IsNumber) { throw new SerializationException(); }  Type = _buf["type"]; }
+        { if(!_buf["hp"].IsNumber) { throw new SerializationException(); }  Hp = _buf["hp"]; }
+        { if(!_buf["attack"].IsNumber) { throw new SerializationException(); }  Attack = _buf["attack"]; }
+        { if(!_buf["speed"].IsNumber) { throw new SerializationException(); }  Speed = _buf["speed"]; }
+        { if(!_buf["range"].IsNumber) { throw new SerializationException(); }  Range = _buf["range"]; }
+        { if(!_buf["attackType"].IsNumber) { throw new SerializationException(); }  AttackType = _buf["attackType"]; }
         { if(!_buf["skill1"].IsNumber) { throw new SerializationException(); }  Skill1 = _buf["skill1"]; }
         { if(!_buf["skill2"].IsNumber) { throw new SerializationException(); }  Skill2 = _buf["skill2"]; }
         { if(!_buf["skill3"].IsNumber) { throw new SerializationException(); }  Skill3 = _buf["skill3"]; }
         { if(!_buf["skill4"].IsNumber) { throw new SerializationException(); }  Skill4 = _buf["skill4"]; }
-        { if(!_buf["type"].IsNumber) { throw new SerializationException(); }  Type = _buf["type"]; }
     }
 
-    public static pet Deserializepet(JSONNode _buf)
+    public static petConfig DeserializepetConfig(JSONNode _buf)
     {
-        return new pet(_buf);
+        return new petConfig(_buf);
     }
 
     /// <summary>
@@ -39,6 +44,30 @@ public sealed partial class pet : Luban.BeanBase
     /// 名称
     /// </summary>
     public readonly string Name;
+    /// <summary>
+    /// 属性
+    /// </summary>
+    public readonly int Type;
+    /// <summary>
+    /// 生命
+    /// </summary>
+    public readonly int Hp;
+    /// <summary>
+    /// 攻击力
+    /// </summary>
+    public readonly int Attack;
+    /// <summary>
+    /// 攻击速度
+    /// </summary>
+    public readonly int Speed;
+    /// <summary>
+    /// 攻击范围
+    /// </summary>
+    public readonly float Range;
+    /// <summary>
+    /// 普通攻击类型（单体，多体）
+    /// </summary>
+    public readonly int AttackType;
     /// <summary>
     /// 技能1
     /// </summary>
@@ -55,12 +84,8 @@ public sealed partial class pet : Luban.BeanBase
     /// 技能4
     /// </summary>
     public readonly int Skill4;
-    /// <summary>
-    /// 页签
-    /// </summary>
-    public readonly int Type;
    
-    public const int __ID__ = 110879;
+    public const int __ID__ = 1254001985;
     public override int GetTypeId() => __ID__;
 
     public  void ResolveRef(Tables tables)
@@ -72,11 +97,16 @@ public sealed partial class pet : Luban.BeanBase
         return "{ "
         + "id:" + Id + ","
         + "name:" + Name + ","
+        + "type:" + Type + ","
+        + "hp:" + Hp + ","
+        + "attack:" + Attack + ","
+        + "speed:" + Speed + ","
+        + "range:" + Range + ","
+        + "attackType:" + AttackType + ","
         + "skill1:" + Skill1 + ","
         + "skill2:" + Skill2 + ","
         + "skill3:" + Skill3 + ","
         + "skill4:" + Skill4 + ","
-        + "type:" + Type + ","
         + "}";
     }
 }

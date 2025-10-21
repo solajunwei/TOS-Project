@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Setting : BasePanel
+public class Setting : UIComponent
 {
     public void onClickSetting()
     {

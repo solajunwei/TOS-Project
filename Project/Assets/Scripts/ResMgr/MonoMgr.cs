@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using System.ComponentModel;
 using UnityEngine;
 using UnityEngine.Events;
@@ -17,7 +16,6 @@ public class MonoMgr : BaseManager<MonoMgr>
     public void AddUpdateListener(UnityAction func)
     {
         controller.AddUpdateListener(func);
-
     }
     public void RemoveUpdateListener(UnityAction func)
     {

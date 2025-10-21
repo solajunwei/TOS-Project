@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
-public class Game : BasePanel
+public class Game : UIComponent
 {
     // Start is called before the first frame update
     private void Start()
@@ -16,10 +17,15 @@ public class Game : BasePanel
         EventManager.Instance.RemoveEventListener(MyConstants.start_game, startGame);
     }
 
+
     public void startGame()
     {
-        Debug.Log("startGame");
-        UnityEngine.SceneManagement.SceneManager.LoadScene("BattleScene");
+        _ = RunBattleScene();
+    }
+
+    public async Task RunBattleScene()
+    {
+        await ResManager.Instance.LoadSceneAsync("BattleScene");
         UIManager.Instance.SetCanvasVisible(false);
     }
 

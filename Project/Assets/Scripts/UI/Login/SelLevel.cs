@@ -1,12 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
-public class SelLevel : BasePanel
+public class SelLevel : UIComponent
 {
     public void onClickLand(int tag)
     {
-        Debug.Log("tag === " + tag);
         UIManager.Instance.HidePanel("Perfabs/Main/Setting");
         UIManager.Instance.ShowPanel<SaveFile>("Perfabs/Login/SaveFile");
     }

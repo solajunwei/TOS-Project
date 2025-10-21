@@ -8,7 +8,7 @@ using UnityEngine;
 
 public class PetModel : BaseManager<PetModel>
 {
-    private List<pet> _onBattlePet = new List<pet>();
+    private List<petConfig> _onBattlePet = new List<petConfig>();
 
     public void onClearPet()
     {
@@ -19,11 +19,11 @@ public class PetModel : BaseManager<PetModel>
     /// 获取上阵宠物的所有数据
     /// </summary>
     /// <returns></returns>
-    public List<pet> GetOnBattlePet()
+    public List<petConfig> GetOnBattlePet()
     {
         if (null == _onBattlePet)
         {
-            return new List<pet>();
+            return new List<petConfig>();
         }
 
         return _onBattlePet;
@@ -34,7 +34,7 @@ public class PetModel : BaseManager<PetModel>
     /// </summary>
     /// <param name="index">在上阵阵容第几个</param>
     /// <returns></returns>
-    public pet GetOnBattlePetByIndex(int index)
+    public petConfig GetOnBattlePetByIndex(int index)
     {
         if (null == _onBattlePet || index >= _onBattlePet.Count)
         {
@@ -49,11 +49,11 @@ public class PetModel : BaseManager<PetModel>
     /// 添加上阵宠物
     /// </summary>
     /// <param name="petInfo"></param>
-    public void AddOnBattlePet(pet petInfo)
+    public void AddOnBattlePet(petConfig petInfo)
     {
         if (null == _onBattlePet)
         {
-            _onBattlePet = new List<pet>();
+            _onBattlePet = new List<petConfig>();
         }
         AddOnBattlePet(petInfo, _onBattlePet.Count);
     }
@@ -63,7 +63,7 @@ public class PetModel : BaseManager<PetModel>
     /// </summary>
     /// <param name="petInfo">上阵的宠物</param>
     /// <param name="index">宠物应该放在那个位置</param>
-    public void AddOnBattlePet(pet petInfo, int index)
+    public void AddOnBattlePet(petConfig petInfo, int index)
     {
         if (null == petInfo)
         {

@@ -1,5 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
@@ -40,6 +40,26 @@ public class ResManager : BaseManager<ResManager>
             //直接传给方法
             callback(r.asset as T);
         }
+    }
+
+
+    public async Task LoadSceneAsync(string sceneName)
+    {
+        if (string.IsNullOrEmpty(sceneName))
+        {
+            Debug.LogError("场景名称为空");
+            return;
+        }
+
+        AsyncOperation asyncOp = SceneManager.LoadSceneAsync(sceneName);
+        while (!asyncOp.isDone)
+        {
+            float progress = asyncOp.progress;
+            Debug.Log($"加载进度：{progress * 100:F1}%");
+            await Task.Yield();
+        }
+
+        Debug.Log("场景加载完成");
     }
 
 }

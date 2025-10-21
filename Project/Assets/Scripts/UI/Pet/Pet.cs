@@ -8,12 +8,12 @@ using UnityEngine.EventSystems;
 
 public class PetInfo : ExampleItemData
 {
-    public pet petInfo;
+    public petConfig petInfo;
     public Pet Delegate;
     public bool isOnBattle = false;
 }
 
-public class Pet : BasePanel
+public class Pet : UIComponent
 {
     [SerializeField]
     private ListView listView;
@@ -38,7 +38,7 @@ public class Pet : BasePanel
     public Text _Element;
 
 
-    private Tbpet _Pet;
+    private TbpetConfig _Pet;
     private TbpetAttri _PetAttri;
     private Tbskills _Skills;
     private PetInfo _ShowPetInfo;
@@ -57,7 +57,7 @@ public class Pet : BasePanel
     private void Start()
     {
         cfg.Tables tb = GameConfig.Instance.getTables();
-        _Pet = tb.Tbpet;
+        _Pet = tb.TbpetConfig;
         _PetAttri = tb.TbpetAttri;
         _Skills = tb.Tbskills;
         _SelElementId = 0;
@@ -76,7 +76,7 @@ public class Pet : BasePanel
 
     public void updateView()
     {
-        pet petInfo = _ShowPetInfo.petInfo;
+        petConfig petInfo = _ShowPetInfo.petInfo;
 
         int elementId = petInfo.Type;
         _Element.text = _PetAttri.Get(elementId).Name;
