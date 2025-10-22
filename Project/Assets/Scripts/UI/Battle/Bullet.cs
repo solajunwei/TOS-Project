@@ -8,7 +8,7 @@ public class Bullet : UIComponent
     private float bulletSpeed = 5f;
 
     // 子弹伤害默认为1
-    private int bulletAttack = 20;
+    private int bulletAttack = 50;
 
     /// <summary>
     /// 子弹目标的 GameObject

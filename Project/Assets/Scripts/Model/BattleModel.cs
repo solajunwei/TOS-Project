@@ -1,9 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class BattleModel : BaseManager<BattleModel>
 {
+
+    // 一关有多少回合
+    private List<int> _roundGroupList = new List<int>
+    {
+        2, 4, 6,8
+    };
+
+    /// <summary>
+    /// 当前回合总共出现了多少个敌方单位
+    /// </summary>
+    private int _curRoundEnemyMax = 0;
+    public int CurRoundEnemyMax
+    {
+        get { return _curRoundEnemyMax; }
+        set { _curRoundEnemyMax = value; }
+    }
+
     /// <summary>
     /// 敌方活着的单位数量
     /// </summary>
@@ -13,16 +31,6 @@ public class BattleModel : BaseManager<BattleModel>
         get { return _EnemyList; }
     }
 
-    private List<GameObject> _HeroList = new List<GameObject>();
-
-    /// <summary>
-    /// 一场最多几个敌人
-    /// </summary>
-    private int _enemyNumMax = 2;
-    public int EnemyNumMax
-    {
-        get { return _enemyNumMax; }
-    }
 
     /// <summary>
     /// 攻击距离最远
@@ -34,15 +42,25 @@ public class BattleModel : BaseManager<BattleModel>
     }
 
 
-    // 敌方单位是否已经加入最大
-    public bool IsEnemyMax()
+    /// <summary>
+    /// 当前轮是否已经添加敌人已经达到最大值
+    /// </summary>
+    /// <param name="round"></param>
+    /// <returns></returns>
+    public bool IsEnemyMax(int round)
     {
-        return _enemyNumMax > _EnemyList.Count;
+        if (round > _roundGroupList.Count)
+        {
+            return false;
+        }
+
+        return _curRoundEnemyMax >= _roundGroupList[round];
     }
 
     // 添加敌方单位
     public void addEnemyList(GameObject addEnemy)
     {
+        _curRoundEnemyMax++;
         _EnemyList.Add(addEnemy);
     }
 
@@ -74,10 +92,11 @@ public class BattleModel : BaseManager<BattleModel>
     // 获取攻击的最先一个
     public GameObject getFirstAttackEnemy(GameObject heroObj)
     {
-        foreach(GameObject enemy in _EnemyList) 
+        Vector3 heroPositoion = new Vector3(heroObj.transform.position.x, heroObj.transform.position.y, 0);
+        foreach(GameObject enemy in _EnemyList)
         {
-            float tmpDis = Vector3.Distance(heroObj.transform.position, enemy.transform.position);
-            Debug.Log("tempDis == " + tmpDis + " enemyPosition === " + enemy.transform.position);
+            Vector3 enemyPositoion = new Vector3(enemy.transform.position.x, enemy.transform.position.y, 0);
+            float tmpDis = Vector3.Distance(heroPositoion, enemyPositoion);
             if(_fDistance >= tmpDis)
             {
                 return enemy;
@@ -87,8 +106,12 @@ public class BattleModel : BaseManager<BattleModel>
         return null;
     }
 
-    private void addHeroList(GameObject addHero)
+    /// <summary>
+    /// 获取当前场战斗总共多少轮
+    /// </summary>
+    /// <returns></returns>
+    public int getRoundCount()
     {
-        _HeroList.Add(addHero);
+        return _roundGroupList.Count;
     }
 }

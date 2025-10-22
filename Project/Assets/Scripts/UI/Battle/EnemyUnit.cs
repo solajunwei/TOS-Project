@@ -8,19 +8,17 @@ using UnityEngine.UI;
 
 public class EnemyUnit : Unit
 {
-    // 攻击当前单位坦克的子弹
-    private List<GameObject> _BulletList = new List<GameObject>();
-    public void AddBullet(GameObject bullet)
+
+    // 自身拥有的金币
+    private int _PointNum = 10;
+    public int PointNum
     {
-        _BulletList.Add(bullet);
+        get { return _PointNum; }
     }
 
     public void OnDestroy()
     {
-
-        Debug.Log("Unit_OnDestory");
         gameObject.SetActive(false);
-
         gameObject.transform.DOKill();
         Destroy(gameObject, 0.01f);
     }
