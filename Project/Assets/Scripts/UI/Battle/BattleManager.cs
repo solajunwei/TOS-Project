@@ -11,6 +11,7 @@ public class BattleManager : MonoBehaviour
     // Start is called before the first frame update
     public GameObject HeroUnit;
     public GameObject EnemyUnit;
+    public Camera _camera;
 
     /// <summary>
     /// 敌方按照动画运动的总时长
@@ -18,6 +19,7 @@ public class BattleManager : MonoBehaviour
     public float fAnimTime = 60f;
 
     private GameObject heroObj;
+    private GameObject _moveObj;
 
     private Vector3[] path;
 
@@ -26,10 +28,13 @@ public class BattleManager : MonoBehaviour
     /// </summary>
     private int _curRound = 1;
 
+    Vector3 lastMousePosition;
+
     private void Start()
     {
         UIManager.Instance.ShowPanel<BattleUI>("Perfabs/Battle/BattleBtns", E_UI_Layer.Mit);
         CreateHero();
+        lastMousePosition = Input.mousePosition;
 
         path = new Vector3[]
         {
@@ -46,12 +51,15 @@ public class BattleManager : MonoBehaviour
         };
 
         EventManager.Instance.AddEventListener<GameObject>(MyConstants.Enemy_deal, EnemyDeal);
+        EventManager.Instance.AddEventListener<Vector3>(MyConstants.create_unit, CreateUnit);
         EventManager.Instance.AddEventListener(MyConstants.jump_next_round, updateNextRound);
+
     }
 
     private void OnDestroy()
     {
         EventManager.Instance.RemoveEventListener<GameObject>(MyConstants.Enemy_deal, EnemyDeal);
+        EventManager.Instance.RemoveEventListener<Vector3>(MyConstants.create_unit, CreateUnit);
         EventManager.Instance.RemoveEventListener(MyConstants.jump_next_round, updateNextRound);
     }
 
@@ -117,7 +125,7 @@ public class BattleManager : MonoBehaviour
         Destroy(unit);
         HeroUnit heroUnit = heroObj.AddComponent<HeroUnit>();
         heroUnit._scrollBar = pro;
-
+        BattleModel.Instance.addPlayerUnit(heroObj);
         startCreateEnemy();
     }
 
@@ -178,29 +186,64 @@ public class BattleManager : MonoBehaviour
 
     private void Update()
     {
-        // 创建子弹
+        // 是否存在敌方单位
         if (!BattleModel.Instance.IsEnemyEmpty())
         {
-            GameObject otherObj = BattleModel.Instance.getFirstAttackEnemy(heroObj);
-            if (null != otherObj) // 确保有敌人在攻击范围内
+            List<GameObject> list = BattleModel.Instance.PlayerList;
+            foreach(GameObject unit in list)
             {
-                HeroUnit herounit = heroObj.GetComponent<HeroUnit>();
-                if(!herounit.IsWaiting) // 不在攻击冷却中
+                GameObject otherObj = BattleModel.Instance.getFirstAttackEnemy(unit);
+                if (null != otherObj) // 确保有敌人在攻击范围内
                 {
-                    herounit.IsWaiting = true;
-                    GameObject bulletObj = Resources.Load<GameObject>("UI/Perfabs/Battle/Buttle");
-                    GameObject killObj = Instantiate(bulletObj, HeroUnit.gameObject.transform.position, Quaternion.identity);
-                    int playerLayerIndex = LayerMask.NameToLayer("Player");
-                    if(playerLayerIndex != -1)
+                    HeroUnit herounit = unit.GetComponent<HeroUnit>();
+                    if (!herounit.IsWaiting) // 不在攻击冷却中
                     {
-                        killObj.layer = playerLayerIndex;
-                    }
-                    Bullet bullet = killObj.GetComponent<Bullet>();
-                    if(bullet){
-                        bullet.TargetCoordinates = otherObj;
+                        herounit.IsWaiting = true;
+                        GameObject bulletObj = Resources.Load<GameObject>("UI/Perfabs/Battle/Buttle");
+                        GameObject killObj = Instantiate(bulletObj, unit.gameObject.transform.position, Quaternion.identity);
+                        int playerLayerIndex = LayerMask.NameToLayer("Player");
+                        if (playerLayerIndex != -1)
+                        {
+                            killObj.layer = playerLayerIndex;
+                        }
+                        Bullet bullet = killObj.GetComponent<Bullet>();
+                        if (bullet)
+                        {
+                            bullet.TargetCoordinates = otherObj;
+                        }
                     }
                 }
             }
         }
+    }
+
+    private void CreateUnit(Vector3 vecPos)
+    {
+        GameObject obj = Resources.Load<GameObject>("UI/Perfabs/Battle/Unit");
+        if (null == obj)
+        {
+            Debug.LogError("Resources load Battle Unit");
+            return;
+        }
+        Vector3 worldPoint = _camera.ScreenToWorldPoint(vecPos);
+        worldPoint.z = 10;
+        GameObject UnitObj = Instantiate(obj, worldPoint, Quaternion.identity);
+
+        UnitObj.tag = "Player";
+        int playerLayerIndex = LayerMask.NameToLayer("Player");
+        if (playerLayerIndex != -1)
+        {
+            UnitObj.layer = playerLayerIndex;
+        }
+
+        Unit unit = UnitObj.GetComponent<Unit>();
+        ZProgress pro = unit._scrollBar;
+        Destroy(unit);
+        HeroUnit heroUnit = UnitObj.AddComponent<HeroUnit>();
+        heroUnit._scrollBar = pro;
+
+
+
+        BattleModel.Instance.addPlayerUnit(UnitObj);
     }
 }

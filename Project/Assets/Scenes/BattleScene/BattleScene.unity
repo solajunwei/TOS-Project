@@ -421,6 +421,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HeroUnit: {fileID: 1511511986}
   EnemyUnit: {fileID: 451852921}
+  _camera: {fileID: 1151491881}
   fAnimTime: 60
 --- !u!1 &1511511986
 GameObject:

@@ -18,5 +18,8 @@ public class MyConstants
     public const string jump_next_round = "jump next round";
 
     // 基地受伤
-    public const string home_attack = "home attack"; 
+    public const string home_attack = "home attack";
+
+    // 创建一个单位战斗
+    public const string create_unit = "create unit";
 }

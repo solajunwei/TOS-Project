@@ -26,7 +26,11 @@ public class UIManager : BaseManager<UIManager>
     private Transform mid;
     private Transform top;
     private Canvas _canvas;
-    public Canvas canvas;
+    public Canvas UICanvas
+    {
+        get { return _canvas; }
+    }
+
     public UIManager() {
         //去找Canvas（做成了预设体在Resources/UI下面）
         GameObject obj= ResManager.Instance.Load<GameObject>("UI/Perfabs/Main/Canvas");
