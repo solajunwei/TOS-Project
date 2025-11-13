@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class HeroUnit : Unit
 {
+
+    private void Start()
+    {
+        this._Level = 1;
+    }
+
     /// <summary>
     /// 是否正在等待攻击
     /// </summary>

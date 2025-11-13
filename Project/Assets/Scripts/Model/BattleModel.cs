@@ -11,9 +11,11 @@ public class BattleModel : BaseManager<BattleModel>
         2, 4, 6,8
     };
 
+
+    private int playerIdx = 0;
     // 多少个英雄单位
-    private List<GameObject> _PlayerList = new List<GameObject>();
-    public List<GameObject> PlayerList
+    private Dictionary<int, GameObject> _PlayerList = new Dictionary<int,GameObject>();
+    public Dictionary<int, GameObject> PlayerList
     {
         get { return _PlayerList; }
     }
@@ -83,9 +85,11 @@ public class BattleModel : BaseManager<BattleModel>
     /// 添加我方单位
     /// </summary>
     /// <param name="player"></param>
-    public void addPlayerUnit(GameObject player)
+    public int addPlayerUnit(GameObject player)
     {
-        PlayerList.Add(player);
+        playerIdx++;
+        PlayerList.Add(playerIdx, player);
+        return playerIdx;   
     }
 
     // 获取第一个单位
@@ -103,8 +107,6 @@ public class BattleModel : BaseManager<BattleModel>
     {
         return _EnemyList.Count == 0;
     }
-
-
 
     // 获取攻击的最先一个
     public GameObject getFirstAttackEnemy(GameObject heroObj)

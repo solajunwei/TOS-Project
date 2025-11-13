@@ -44,12 +44,14 @@ public class BattleUI : UIComponent
         EventManager.Instance.AddEventListener(MyConstants.jump_next_round, updateNextRound);
         EventManager.Instance.AddEventListener(MyConstants.home_attack, updateLeft);
         EventManager.Instance.AddEventListener<GameObject>(MyConstants.Enemy_deal, EnemyDeal);
+        EventManager.Instance.AddEventListener<int>(MyConstants.unit_up, onUnitUp);
     }
     public void OnDestroy()
     {
         EventManager.Instance.RemoveEventListener(MyConstants.jump_next_round, updateNextRound);
         EventManager.Instance.RemoveEventListener(MyConstants.home_attack, updateLeft);
         EventManager.Instance.RemoveEventListener<GameObject>(MyConstants.Enemy_deal, EnemyDeal);
+        EventManager.Instance.RemoveEventListener<int>(MyConstants.unit_up, onUnitUp);
     }
 
     public void Update()
@@ -156,7 +158,6 @@ public class BattleUI : UIComponent
     // 抽卡
     public void Draw()
     {
-
         int index = getInstantiateIndex();
         if (index == -1)
         {
@@ -175,16 +176,40 @@ public class BattleUI : UIComponent
         obj.transform.localPosition = Vector3.zero;
         obj.transform.localRotation = Quaternion.identity;
         obj.transform.localScale = Vector3.one;
+        obj.transform.SetParent(image.transform, false);
+        //obj.transform.parent = image.transform;
 
         int petId = 11001;
         PetUnit unit = obj.GetComponent<PetUnit>();
         unit.LoadAndReplaceImage(petId);
+        _drawPetDic[index] = petId;
+
         if (checkCanMerge(petId))
         {
+            EventManager.Instance.EventTrigger<int>(MyConstants.unit_up, petId);
             return;
         }
-        _drawPetDic[index] = petId;
     }
+
+    public void onUnitUp(int petId)
+    {
+        //int nCount = 0;
+        //foreach(int key in _drawPetDic.Keys)
+        //{
+        //    _drawPetDic[key] = 0;
+
+
+
+
+        //    nCount++;
+        //    if (nCount >= 3)
+        //    {
+        //        break;
+        //    }
+        //}
+        
+    }
+
 
     // 获取抽取出来的宠物放在的位置
     private int getInstantiateIndex()
@@ -203,6 +228,21 @@ public class BattleUI : UIComponent
     // 判断宠物是否可以合并
     private bool checkCanMerge(int petId)
     {
+        int nCount = 0;
+        // 判断是否已经存在了三个，可合并
+        foreach (int value in _drawPetDic.Values)
+        {
+            if (value == petId)
+            {
+                nCount++;
+            }
+
+            if (nCount >= 3)
+            {
+                // 可合并
+                return true;
+            }
+        }
         return false;
     }
 

@@ -22,4 +22,12 @@ public class MyConstants
 
     // 创建一个单位战斗
     public const string create_unit = "create unit";
+
+    // 单位可升级
+    public const string unit_show_can_up = "unit show can up";
+    // 单位升级
+    public const string unit_up = "unit up";
+
+    // 英雄出售
+    public const string unit_sell = "unit sell";
 }

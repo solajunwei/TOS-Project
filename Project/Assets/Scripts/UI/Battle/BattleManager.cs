@@ -5,6 +5,7 @@ using UnityEngine;
 using DG.Tweening;
 using UnityEditor;
 using Unity.VisualScripting;
+using UnityEngine.UI;
 
 public class BattleManager : MonoBehaviour
 {
@@ -106,26 +107,16 @@ public class BattleManager : MonoBehaviour
     private void CreateHero()
     {
         Debug.Log("BattleManager_CreateHero");
-        GameObject UnitObj = Resources.Load<GameObject>("UI/Perfabs/Battle/Unit");
+        GameObject UnitObj = Resources.Load<GameObject>("UI/Perfabs/Battle/HeroUnit");
         if (null == UnitObj)
         {
             Debug.LogError("Resources load Battle Unit");
             return;
         }
         heroObj = Instantiate(UnitObj, HeroUnit.gameObject.transform.position, Quaternion.identity);
-        heroObj.tag = "Player";
-        int playerLayerIndex = LayerMask.NameToLayer("Player");
-        if (playerLayerIndex != -1)
-        {
-            heroObj.layer = playerLayerIndex;
-        }
-
-        Unit unit = heroObj.GetComponent<Unit>();
-        ZProgress pro = unit._scrollBar;
-        Destroy(unit);
-        HeroUnit heroUnit = heroObj.AddComponent<HeroUnit>();
-        heroUnit._scrollBar = pro;
-        BattleModel.Instance.addPlayerUnit(heroObj);
+        HeroUnit unit = heroObj.GetComponent<HeroUnit>();
+        int unitIdx = BattleModel.Instance.addPlayerUnit(heroObj);
+        unit.PetID = unitIdx;
         startCreateEnemy();
     }
 
@@ -189,8 +180,8 @@ public class BattleManager : MonoBehaviour
         // 是否存在敌方单位
         if (!BattleModel.Instance.IsEnemyEmpty())
         {
-            List<GameObject> list = BattleModel.Instance.PlayerList;
-            foreach(GameObject unit in list)
+            Dictionary<int, GameObject> list = BattleModel.Instance.PlayerList;
+            foreach(GameObject unit in list.Values)
             {
                 GameObject otherObj = BattleModel.Instance.getFirstAttackEnemy(unit);
                 if (null != otherObj) // 确保有敌人在攻击范围内
@@ -219,7 +210,7 @@ public class BattleManager : MonoBehaviour
 
     private void CreateUnit(Vector3 vecPos)
     {
-        GameObject obj = Resources.Load<GameObject>("UI/Perfabs/Battle/Unit");
+        GameObject obj = Resources.Load<GameObject>("UI/Perfabs/Battle/HeroUnit");
         if (null == obj)
         {
             Debug.LogError("Resources load Battle Unit");
@@ -228,22 +219,8 @@ public class BattleManager : MonoBehaviour
         Vector3 worldPoint = _camera.ScreenToWorldPoint(vecPos);
         worldPoint.z = 10;
         GameObject UnitObj = Instantiate(obj, worldPoint, Quaternion.identity);
-
-        UnitObj.tag = "Player";
-        int playerLayerIndex = LayerMask.NameToLayer("Player");
-        if (playerLayerIndex != -1)
-        {
-            UnitObj.layer = playerLayerIndex;
-        }
-
-        Unit unit = UnitObj.GetComponent<Unit>();
-        ZProgress pro = unit._scrollBar;
-        Destroy(unit);
-        HeroUnit heroUnit = UnitObj.AddComponent<HeroUnit>();
-        heroUnit._scrollBar = pro;
-
-
-
-        BattleModel.Instance.addPlayerUnit(UnitObj);
+        HeroUnit heroUnit = UnitObj.GetComponent<HeroUnit>();
+        int unitIdx = BattleModel.Instance.addPlayerUnit(UnitObj);
+        heroUnit.PetID = unitIdx;
     }
 }
