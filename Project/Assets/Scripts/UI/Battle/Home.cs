@@ -35,6 +35,7 @@ public class Home : MonoBehaviour
         {
             _HP = 0;
             Debug.Log("À¿Õˆ¡À");
+            EventManager.Instance.EventTrigger(MyConstants.gameoverLevel);
             return;
         }
         _scrollBar.SetProgress((float)_HP / _HPMax);

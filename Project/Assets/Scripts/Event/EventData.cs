@@ -19,15 +19,29 @@ public class MyConstants
 
     // 基地受伤
     public const string home_attack = "home attack";
+    
+    // 游戏结束
+    public const string gameoverLevel = "gameoverlevel";
 
     // 创建一个单位战斗
     public const string create_unit = "create unit";
 
-    // 单位可升级
+    // 显示单位可升级
     public const string unit_show_can_up = "unit show can up";
+    // 隐藏单位可升级
+    public const string unit_hide_can_up = "unit hide can up";
     // 单位升级
     public const string unit_up = "unit up";
 
     // 英雄出售
     public const string unit_sell = "unit sell";
+
+    // 隐藏单位出售
+    public const string hide_unit_sell = "hide unit sell";
+
+    // 添加金币
+    public const string add_Point = "add Point";
+
+    // 返回界面
+    public const string backUI = "backUI";
 }

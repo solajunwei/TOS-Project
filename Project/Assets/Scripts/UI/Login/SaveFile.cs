@@ -1,41 +1,25 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
-public class SaveFile : UIComponent
+public class SaveFile : UIView
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void onBack()
     {
-        UIManager.Instance.HidePanel("Perfabs/Login/SaveFile");
+        UIManager.Instance.GoBack();
     }
-
 
     // ¼òµ¥
     public void onOpenSaveEase()
     {
-        UIManager.Instance.ShowPanel<SelectLevel>("Perfabs/Login/SelectLevel");
+        UIManager.Instance.OpenView<SelectLevel>("Perfabs/Login/SelectLevel");
     }
 
     // À§ÄÑ
     public void onOpenSaveDifficulty()
     {
-        UIManager.Instance.ShowPanel<SelectLevel>("Perfabs/Login/SelectLevel");
+        UIManager.Instance.OpenView<SelectLevel>("Perfabs/Login/SelectLevel");
     }
 
     public void onOpenNewGame()
     {
-        UIManager.Instance.ShowPanel<SelectLevel>("Perfabs/Login/SelectLevel");
+        UIManager.Instance.OpenView<SelectLevel>("Perfabs/Login/SelectLevel");
     }    
 }

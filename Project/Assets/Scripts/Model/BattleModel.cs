@@ -92,6 +92,18 @@ public class BattleModel : BaseManager<BattleModel>
         return playerIdx;   
     }
 
+    public void removePlayerUnit(GameObject player)
+    {
+        foreach(KeyValuePair<int, GameObject> item in PlayerList)
+        {
+            if (item.Value.Equals(player))
+            {
+                PlayerList.Remove(item.Key);
+                break;
+            }
+        }
+    }
+
     // 获取第一个单位
     public GameObject getFirstEnemy()
     {

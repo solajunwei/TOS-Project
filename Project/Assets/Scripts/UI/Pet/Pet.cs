@@ -13,7 +13,7 @@ public class PetInfo : ExampleItemData
     public bool isOnBattle = false;
 }
 
-public class Pet : UIComponent
+public class Pet : UIView
 {
     [SerializeField]
     private ListView listView;

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Login : UIComponent
+public class Login : UIView
 {
     void Start()
     {
@@ -11,7 +11,7 @@ public class Login : UIComponent
 
     public void onStartGame()
     {
-        UIManager.Instance.ShowPanel<SelLevel>("Perfabs/Login/SelLevel");
+        UIManager.Instance.OpenView<SelLevel>("Perfabs/Login/SelLevel");
     }
 
     public void onSetting()

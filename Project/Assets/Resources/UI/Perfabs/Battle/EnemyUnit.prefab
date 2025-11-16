@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 981909675663443207}
   - component: {fileID: 8374595794916088830}
   - component: {fileID: 5464950663463459756}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: BtnUp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -121,7 +121,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1468386033361566166}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Unit, Assembly-CSharp
         m_MethodName: onClickUp
         m_Mode: 1
@@ -145,7 +145,7 @@ GameObject:
   - component: {fileID: 2958250994908539507}
   - component: {fileID: 7684192286243152883}
   - component: {fileID: 7912587003645365564}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -237,7 +237,7 @@ GameObject:
   - component: {fileID: 2936880141254605224}
   - component: {fileID: 6583084374526163484}
   - component: {fileID: 94316915278074180}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -345,7 +345,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1468386033361566166}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Unit, Assembly-CSharp
         m_MethodName: onClickBtn
         m_Mode: 1
@@ -368,7 +368,7 @@ GameObject:
   - component: {fileID: 2868252965379317902}
   - component: {fileID: 8121972034374645460}
   - component: {fileID: 6282762485450661897}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -448,7 +448,7 @@ GameObject:
   - component: {fileID: 618232849117790521}
   - component: {fileID: 4148121444318597328}
   - component: {fileID: 9135980165790346855}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -553,10 +553,10 @@ GameObject:
   - component: {fileID: 8457006875738137211}
   - component: {fileID: 9157324812605408825}
   - component: {fileID: 6542410304640689861}
-  - component: {fileID: 1468386033361566166}
-  m_Layer: 7
-  m_Name: HeroUnit
-  m_TagString: Player
+  - component: {fileID: 2255180233134554339}
+  m_Layer: 0
+  m_Name: EnemyUnit
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -677,7 +677,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.16, y: 0.16, z: 0.2}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1468386033361566166
+--- !u!114 &2255180233134554339
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -686,13 +686,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 5603185484129883535}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d22f3e876ff071744841c2e529af84f1, type: 3}
+  m_Script: {fileID: 11500000, guid: 8e134e2707f24ad43bc30c014e88c9c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _scrollBar: {fileID: 7912587003645365564}
   _BtnSell: {fileID: 2069871433174927596}
   _BtnUp: {fileID: 5464950663463459756}
-  uiRaycaster: {fileID: 9135980165790346855}
 --- !u!1 &6070571881747685475
 GameObject:
   m_ObjectHideFlags: 0
@@ -704,7 +703,7 @@ GameObject:
   - component: {fileID: 4767968821566096224}
   - component: {fileID: 684933708792725119}
   - component: {fileID: 6675527361642986227}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -784,7 +783,7 @@ GameObject:
   - component: {fileID: 1163189175591076009}
   - component: {fileID: 7013395548203717083}
   - component: {fileID: 2069871433174927596}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: BtnSell
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -893,7 +892,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1468386033361566166}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Unit, Assembly-CSharp
         m_MethodName: onClickSell
         m_Mode: 1
@@ -916,7 +915,7 @@ GameObject:
   - component: {fileID: 6518023895305346221}
   - component: {fileID: 4726340881269699098}
   - component: {fileID: 8941487472455379936}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -7,7 +7,8 @@ public class StartScript : MonoBehaviour
     {
         GameConfig.Instance.getTables();
         var mono = MonoMgr.Instance;
-        UIManager.Instance.ShowPanel<Login>("Perfabs/Login/Login");
-        UIManager.Instance.ShowPanel<Setting>("Perfabs/Main/Setting", E_UI_Layer.Top);
+
+        UIManager.Instance.OpenView<Login>("Perfabs/Login/Login");
+        UIManager.Instance.OpenView<Setting>("Perfabs/Main/Setting", E_UI_Layer.Top);
     }
 }

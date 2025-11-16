@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using System;
 
-public class BattleUI : UIComponent
+public class BattleUI : UIView, IPointerClickHandler
 {
     public Image[] _iamges;
     public GameObject _prefab;
@@ -33,7 +34,6 @@ public class BattleUI : UIComponent
 
     public void Start()
     {
-        Debug.Log(".net version:" + System.Environment.Version);
         int roundCount = BattleModel.Instance.getRoundCount();
         _RoundText.text = _round + "/" + roundCount;
         _PointText.text = _point.ToString();
@@ -45,6 +45,7 @@ public class BattleUI : UIComponent
         EventManager.Instance.AddEventListener(MyConstants.home_attack, updateLeft);
         EventManager.Instance.AddEventListener<GameObject>(MyConstants.Enemy_deal, EnemyDeal);
         EventManager.Instance.AddEventListener<int>(MyConstants.unit_up, onUnitUp);
+        EventManager.Instance.AddEventListener<int>(MyConstants.add_Point, onAddPoint);
     }
     public void OnDestroy()
     {
@@ -52,6 +53,7 @@ public class BattleUI : UIComponent
         EventManager.Instance.RemoveEventListener(MyConstants.home_attack, updateLeft);
         EventManager.Instance.RemoveEventListener<GameObject>(MyConstants.Enemy_deal, EnemyDeal);
         EventManager.Instance.RemoveEventListener<int>(MyConstants.unit_up, onUnitUp);
+        EventManager.Instance.RemoveEventListener<int>(MyConstants.add_Point, onAddPoint);
     }
 
     public void Update()
@@ -70,7 +72,10 @@ public class BattleUI : UIComponent
             List<RaycastResult> hitResults = new List<RaycastResult>();
             uiRaycaster.Raycast(pointerData, hitResults);
 
+            Dictionary<int, GameObject> mPlayerList = BattleModel.Instance.PlayerList;
+
             // 遍历命中结果，判断是否包含目标Image
+            bool isHide = false;
             foreach (RaycastResult result in hitResults)
             {
                 for (int i = 0; i < _iamges.Length; i++)
@@ -82,6 +87,28 @@ public class BattleUI : UIComponent
                         break; // 找到后退出循环
                     }
                 }
+
+                if (!isHide)
+                {
+                    foreach (GameObject playerObj in mPlayerList.Values)
+                    {
+                        if (result.gameObject == playerObj)
+                        {
+                            isHide = true;
+                            break; // 找到后退出循环
+                        }
+                    }
+                }
+            }
+
+            // 没有找到
+            if (!isHide)
+            {
+                Debug.Log("sssssss");
+
+                
+
+                //EventManager.Instance.EventTrigger(MyConstants.hide_unit_sell);
             }
         }
 
@@ -155,6 +182,12 @@ public class BattleUI : UIComponent
         _PointText.text = _point.ToString();
     }
 
+    public void onAddPoint(int point)
+    {
+        _point += point;
+        _PointText.text = _point.ToString();
+    }
+
     // 抽卡
     public void Draw()
     {
@@ -177,7 +210,6 @@ public class BattleUI : UIComponent
         obj.transform.localRotation = Quaternion.identity;
         obj.transform.localScale = Vector3.one;
         obj.transform.SetParent(image.transform, false);
-        //obj.transform.parent = image.transform;
 
         int petId = 11001;
         PetUnit unit = obj.GetComponent<PetUnit>();
@@ -186,30 +218,44 @@ public class BattleUI : UIComponent
 
         if (checkCanMerge(petId))
         {
-            EventManager.Instance.EventTrigger<int>(MyConstants.unit_up, petId);
+            EventManager.Instance.EventTrigger<int>(MyConstants.unit_show_can_up, petId);
             return;
+        }
+        else
+        {
+            Debug.Log("erroro");
         }
     }
 
     public void onUnitUp(int petId)
     {
-        //int nCount = 0;
-        //foreach(int key in _drawPetDic.Keys)
-        //{
-        //    _drawPetDic[key] = 0;
+        int nCount = 0;
+        List<int> tempList = new List<int>();
+        foreach (int key in _drawPetDic.Keys)
+        {
+            tempList.Add(key);
+            nCount++;
+            if (nCount >= 3)
+            {
+                break;
+            }
+        }
 
+        foreach(int key in tempList)
+        {
+            Image image = _iamges[key];
+            Transform child = image.transform.GetChild(0);
+            Destroy(child.gameObject);
 
+            _drawPetDic.Remove(key);
+        }
 
-
-        //    nCount++;
-        //    if (nCount >= 3)
-        //    {
-        //        break;
-        //    }
-        //}
-        
+        // 隐藏展示
+        if (!checkCanMerge(petId))
+        {
+            EventManager.Instance.EventTrigger<int>(MyConstants.unit_hide_can_up, petId);
+        }
     }
-
 
     // 获取抽取出来的宠物放在的位置
     private int getInstantiateIndex()
@@ -217,6 +263,10 @@ public class BattleUI : UIComponent
         for (int i = 0; i < 10; i++)
         {
             if (!_drawPetDic.ContainsKey(i))
+            {
+                return i;
+            }
+            else if(_drawPetDic[i] == 0)
             {
                 return i;
             }
@@ -249,6 +299,11 @@ public class BattleUI : UIComponent
     public void OnClickSkill(int skillId)
     {
 
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        Debug.Log("sdfad=== ");
     }
 }
 

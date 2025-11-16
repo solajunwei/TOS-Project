@@ -1,15 +1,11 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Security.Cryptography;
 using UnityEngine;
 using DG.Tweening;
-using UnityEditor;
-using Unity.VisualScripting;
-using UnityEngine.UI;
+using System;
 
 public class BattleManager : MonoBehaviour
 {
-    // Start is called before the first frame update
+
     public GameObject HeroUnit;
     public GameObject EnemyUnit;
     public Camera _camera;
@@ -20,22 +16,20 @@ public class BattleManager : MonoBehaviour
     public float fAnimTime = 60f;
 
     private GameObject heroObj;
-    private GameObject _moveObj;
 
     private Vector3[] path;
+
+    private bool isGameOver = false;
 
     /// <summary>
     /// 当前是第几轮
     /// </summary>
     private int _curRound = 1;
 
-    Vector3 lastMousePosition;
-
     private void Start()
     {
-        UIManager.Instance.ShowPanel<BattleUI>("Perfabs/Battle/BattleBtns", E_UI_Layer.Mit);
+        UIManager.Instance.OpenView<BattleUI>("Perfabs/Battle/BattleBtns", E_UI_Layer.Mit);
         CreateHero();
-        lastMousePosition = Input.mousePosition;
 
         path = new Vector3[]
         {
@@ -54,7 +48,7 @@ public class BattleManager : MonoBehaviour
         EventManager.Instance.AddEventListener<GameObject>(MyConstants.Enemy_deal, EnemyDeal);
         EventManager.Instance.AddEventListener<Vector3>(MyConstants.create_unit, CreateUnit);
         EventManager.Instance.AddEventListener(MyConstants.jump_next_round, updateNextRound);
-
+        EventManager.Instance.AddEventListener(MyConstants.gameoverLevel, gameover);
     }
 
     private void OnDestroy()
@@ -62,19 +56,30 @@ public class BattleManager : MonoBehaviour
         EventManager.Instance.RemoveEventListener<GameObject>(MyConstants.Enemy_deal, EnemyDeal);
         EventManager.Instance.RemoveEventListener<Vector3>(MyConstants.create_unit, CreateUnit);
         EventManager.Instance.RemoveEventListener(MyConstants.jump_next_round, updateNextRound);
+        EventManager.Instance.RemoveEventListener(MyConstants.gameoverLevel, gameover);
+    }
+
+    public void gameover()
+    {
+        isGameOver = true;
+        // 展示结算
+        UIManager.Instance.OpenView<GameResult>("Perfabs/Battle/GameResult", E_UI_Layer.Mit);
     }
 
     // 跳转到下一轮
     public void updateNextRound()
     {
+        if (isGameOver) return;
         _curRound++;
         int roundCount = BattleModel.Instance.getRoundCount();
 
         // 如果大于当前最大一轮，则当前战斗胜利
-        if (_curRound > roundCount)
+        if (_curRound >= roundCount)
         {
             // 战斗胜利
             Debug.Log("战斗胜利");
+            isGameOver = true;
+            UIManager.Instance.OpenView<GameResult>("Perfabs/Battle/GameResult", E_UI_Layer.Mit);
             return;
         }
 
@@ -87,6 +92,7 @@ public class BattleManager : MonoBehaviour
 
     public void EnemyDeal(GameObject obj)
     {
+        if (isGameOver) return;
         foreach (GameObject objTet in BattleModel.Instance.EnemyList)
         {
             if (obj == objTet)
@@ -106,6 +112,7 @@ public class BattleManager : MonoBehaviour
 
     private void CreateHero()
     {
+        if (isGameOver) return;
         Debug.Log("BattleManager_CreateHero");
         GameObject UnitObj = Resources.Load<GameObject>("UI/Perfabs/Battle/HeroUnit");
         if (null == UnitObj)
@@ -125,12 +132,15 @@ public class BattleManager : MonoBehaviour
     /// </summary>
     public void startCreateEnemy()
     {
+        if (isGameOver) return;
         // 延迟5秒后开始创建敌方单位，每秒创建一个
         InvokeRepeating("CountDown", 5f, 2f);
     }
     
     public void CountDown()
     {
+        if (isGameOver) return;
+        Debug.Log("countDown ==== ");
         // 当前轮敌方单位是否已经达到上线
         if (BattleModel.Instance.IsEnemyMax(_curRound))
         {
@@ -145,25 +155,15 @@ public class BattleManager : MonoBehaviour
 
     private void CreateEnemy()
     {
+        if (isGameOver) return;
         Debug.Log("BattleManager_CreateEnemy");
-        GameObject UnitObj = Resources.Load<GameObject>("UI/Perfabs/Battle/Unit");
+        GameObject UnitObj = Resources.Load<GameObject>("UI/Perfabs/Battle/EnemyUnit");
         if (null == UnitObj)
         {
             Debug.LogError("Resources load Battle Unit");
             return;
         }
         GameObject emenyObj = Instantiate(UnitObj, EnemyUnit.gameObject.transform.position, Quaternion.identity);
-        Unit unit = emenyObj.GetComponent<Unit>();
-        ZProgress pro = unit._scrollBar;
-        Destroy(unit);
-        EnemyUnit enemyUnit = emenyObj.AddComponent<EnemyUnit>();
-        enemyUnit._scrollBar = pro;
-        int playerLayerIndex = LayerMask.NameToLayer("Player");
-        if(playerLayerIndex != -1)
-        {
-            emenyObj.layer = playerLayerIndex;
-        }
-
         BattleModel.Instance.addEnemyList(emenyObj);
         RunEnemyPosition(emenyObj);
     }
@@ -177,6 +177,7 @@ public class BattleManager : MonoBehaviour
 
     private void Update()
     {
+        if (isGameOver) return;
         // 是否存在敌方单位
         if (!BattleModel.Instance.IsEnemyEmpty())
         {
@@ -210,6 +211,7 @@ public class BattleManager : MonoBehaviour
 
     private void CreateUnit(Vector3 vecPos)
     {
+        if (isGameOver) return;
         GameObject obj = Resources.Load<GameObject>("UI/Perfabs/Battle/HeroUnit");
         if (null == obj)
         {

@@ -6,8 +6,8 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/TestScene/2dSceneTest.unity
-    guid: dac8b9fa1be2ffe49b70e28680a2ac82
+    path: Assets/Scenes/Towers.unity
+    guid: 679de1c090672b64b8de824f10f2f1fe
   - enabled: 1
     path: Assets/Scenes/BattleScene/BattleScene.unity
     guid: 439c37cab7428674da51bc50d3e08fd3

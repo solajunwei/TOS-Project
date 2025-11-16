@@ -1,15 +1,15 @@
 
-public class SelLevel : UIComponent
+public class SelLevel : UIView
 {
     public void onClickLand(int tag)
     {
-        UIManager.Instance.HidePanel("Perfabs/Main/Setting");
-        UIManager.Instance.ShowPanel<SaveFile>("Perfabs/Login/SaveFile");
+        UIManager.Instance.GoBack(E_UI_Layer.Top);
+        UIManager.Instance.OpenView<SaveFile>("Perfabs/Login/SaveFile");
     }
 
     public void onClickBack()
     {
-        UIManager.Instance.HidePanel("Perfabs/Login/SelLevel");
+        UIManager.Instance.GoBack();
     }
 
     public void onClickPet()
