@@ -2,10 +2,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using System;
+using Battle;
 
 public class BattleManager : MonoBehaviour
 {
-
     public GameObject HeroUnit;
     public GameObject EnemyUnit;
     public Camera _camera;
@@ -19,16 +19,12 @@ public class BattleManager : MonoBehaviour
 
     private Vector3[] path;
 
-    private bool isGameOver = false;
-
-    /// <summary>
-    /// 当前是第几轮
-    /// </summary>
-    private int _curRound = 1;
+    BattleInfo battlelInfo = null;
 
     private void Start()
     {
         UIManager.Instance.OpenView<BattleUI>("Perfabs/Battle/BattleBtns", E_UI_Layer.Mit);
+        battlelInfo = BattleModel.Instance.CurBattleInfo;
         CreateHero();
 
         path = new Vector3[]
@@ -61,7 +57,7 @@ public class BattleManager : MonoBehaviour
 
     public void gameover()
     {
-        isGameOver = true;
+        battlelInfo.setGameOver(true);
         // 展示结算
         UIManager.Instance.OpenView<GameResult>("Perfabs/Battle/GameResult", E_UI_Layer.Mit);
     }
@@ -69,22 +65,10 @@ public class BattleManager : MonoBehaviour
     // 跳转到下一轮
     public void updateNextRound()
     {
-        if (isGameOver) return;
-        _curRound++;
-        int roundCount = BattleModel.Instance.getRoundCount();
-
-        // 如果大于当前最大一轮，则当前战斗胜利
-        if (_curRound >= roundCount)
+        if (battlelInfo.isGameOver())
         {
-            // 战斗胜利
-            Debug.Log("战斗胜利");
-            isGameOver = true;
-            UIManager.Instance.OpenView<GameResult>("Perfabs/Battle/GameResult", E_UI_Layer.Mit);
             return;
         }
-
-        // 重置当前轮的数值
-        BattleModel.Instance.CurRoundEnemyMax = 0;
 
         // 开始创建新的敌方单位
         startCreateEnemy();
@@ -92,28 +76,13 @@ public class BattleManager : MonoBehaviour
 
     public void EnemyDeal(GameObject obj)
     {
-        if (isGameOver) return;
-        foreach (GameObject objTet in BattleModel.Instance.EnemyList)
-        {
-            if (obj == objTet)
-            {
-                Destroy(objTet, 0.01f);
-                BattleModel.Instance.removeEnemyList(objTet);
-                break;
-            }
-        }
-
-        // 如果当前轮的所有敌方单位全部死亡，切换下一轮
-        if(BattleModel.Instance.IsEnemyEmpty())
-        {
-            EventManager.Instance.EventTrigger(MyConstants.jump_next_round);
-        }
+        if (battlelInfo.isGameOver()) return;
+        battlelInfo.removeEnemy(obj);
+        Destroy(obj, 0.01f);
     }
 
     private void CreateHero()
     {
-        if (isGameOver) return;
-        Debug.Log("BattleManager_CreateHero");
         GameObject UnitObj = Resources.Load<GameObject>("UI/Perfabs/Battle/HeroUnit");
         if (null == UnitObj)
         {
@@ -121,9 +90,7 @@ public class BattleManager : MonoBehaviour
             return;
         }
         heroObj = Instantiate(UnitObj, HeroUnit.gameObject.transform.position, Quaternion.identity);
-        HeroUnit unit = heroObj.GetComponent<HeroUnit>();
-        int unitIdx = BattleModel.Instance.addPlayerUnit(heroObj);
-        unit.PetID = unitIdx;
+        battlelInfo.addPlayer(heroObj);
         startCreateEnemy();
     }
 
@@ -132,17 +99,15 @@ public class BattleManager : MonoBehaviour
     /// </summary>
     public void startCreateEnemy()
     {
-        if (isGameOver) return;
+        if (battlelInfo.isGameOver()) return;
         // 延迟5秒后开始创建敌方单位，每秒创建一个
         InvokeRepeating("CountDown", 5f, 2f);
     }
     
     public void CountDown()
     {
-        if (isGameOver) return;
-        Debug.Log("countDown ==== ");
         // 当前轮敌方单位是否已经达到上线
-        if (BattleModel.Instance.IsEnemyMax(_curRound))
+        if (battlelInfo.isGameOver() || battlelInfo.IsRoundEnemyMax())
         {
             // 停止定时器添加单位
             CancelInvoke("CountDown");
@@ -155,8 +120,7 @@ public class BattleManager : MonoBehaviour
 
     private void CreateEnemy()
     {
-        if (isGameOver) return;
-        Debug.Log("BattleManager_CreateEnemy");
+        if (battlelInfo.isGameOver()) return;
         GameObject UnitObj = Resources.Load<GameObject>("UI/Perfabs/Battle/EnemyUnit");
         if (null == UnitObj)
         {
@@ -164,7 +128,7 @@ public class BattleManager : MonoBehaviour
             return;
         }
         GameObject emenyObj = Instantiate(UnitObj, EnemyUnit.gameObject.transform.position, Quaternion.identity);
-        BattleModel.Instance.addEnemyList(emenyObj);
+        battlelInfo.addEnemy(emenyObj);
         RunEnemyPosition(emenyObj);
     }
     
@@ -177,22 +141,22 @@ public class BattleManager : MonoBehaviour
 
     private void Update()
     {
-        if (isGameOver) return;
+        if (battlelInfo.isGameOver()) return;
         // 是否存在敌方单位
-        if (!BattleModel.Instance.IsEnemyEmpty())
+        if (!battlelInfo.isEnemyEmpty())
         {
-            Dictionary<int, GameObject> list = BattleModel.Instance.PlayerList;
-            foreach(GameObject unit in list.Values)
+            List<GameObject> list = battlelInfo.PlayerList;
+            foreach(GameObject obj in list)
             {
-                GameObject otherObj = BattleModel.Instance.getFirstAttackEnemy(unit);
+                GameObject otherObj = battlelInfo.getFirstAttackEnemy(obj);
                 if (null != otherObj) // 确保有敌人在攻击范围内
                 {
-                    HeroUnit herounit = unit.GetComponent<HeroUnit>();
+                    HeroUnit herounit = obj.GetComponent<HeroUnit>();
                     if (!herounit.IsWaiting) // 不在攻击冷却中
                     {
                         herounit.IsWaiting = true;
                         GameObject bulletObj = Resources.Load<GameObject>("UI/Perfabs/Battle/Buttle");
-                        GameObject killObj = Instantiate(bulletObj, unit.gameObject.transform.position, Quaternion.identity);
+                        GameObject killObj = Instantiate(bulletObj, obj.gameObject.transform.position, Quaternion.identity);
                         int playerLayerIndex = LayerMask.NameToLayer("Player");
                         if (playerLayerIndex != -1)
                         {
@@ -211,7 +175,7 @@ public class BattleManager : MonoBehaviour
 
     private void CreateUnit(Vector3 vecPos)
     {
-        if (isGameOver) return;
+        if (battlelInfo.isGameOver()) return;
         GameObject obj = Resources.Load<GameObject>("UI/Perfabs/Battle/HeroUnit");
         if (null == obj)
         {
@@ -221,8 +185,6 @@ public class BattleManager : MonoBehaviour
         Vector3 worldPoint = _camera.ScreenToWorldPoint(vecPos);
         worldPoint.z = 10;
         GameObject UnitObj = Instantiate(obj, worldPoint, Quaternion.identity);
-        HeroUnit heroUnit = UnitObj.GetComponent<HeroUnit>();
-        int unitIdx = BattleModel.Instance.addPlayerUnit(UnitObj);
-        heroUnit.PetID = unitIdx;
+        battlelInfo.addPlayer(UnitObj);
     }
 }

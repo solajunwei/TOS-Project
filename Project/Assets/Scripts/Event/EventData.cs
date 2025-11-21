@@ -45,3 +45,12 @@ public class MyConstants
     // ∑µªÿΩÁ√Ê
     public const string backUI = "backUI";
 }
+
+class BattleConfig
+{
+    public static List<int> RoundGroupList = new List<int>{
+        2, 4, 6,8
+    };
+
+    public const int UPLEVELNEEDPETNUM = 3;
+}

@@ -31,25 +31,13 @@ public class Unit : MonoBehaviour
         get { return _Level; }
     }
 
-    public Button _BtnSell;
-    public Button _BtnUp;
-
-
     protected virtual void Start()
     {
         _scrollBar.SetProgress(1);
-        EventManager.Instance.AddEventListener<int>(MyConstants.unit_show_can_up, onUnitUp);
-        EventManager.Instance.AddEventListener<int>(MyConstants.unit_hide_can_up, onHideUnitUp);
-        EventManager.Instance.AddEventListener<int>(MyConstants.unit_sell, onUnitSell);
-        EventManager.Instance.AddEventListener(MyConstants.hide_unit_sell, onHideUnitSell);
     }
 
-    private void OnDestroy()
+    protected virtual void OnDestroy()
     {
-        EventManager.Instance.RemoveEventListener<int>(MyConstants.unit_show_can_up, onUnitUp);
-        EventManager.Instance.RemoveEventListener<int>(MyConstants.unit_hide_can_up, onHideUnitUp);
-        EventManager.Instance.RemoveEventListener<int>(MyConstants.unit_sell, onUnitSell);
-        EventManager.Instance.AddEventListener(MyConstants.hide_unit_sell, onHideUnitSell);
     }
 
     /// <summary>
@@ -71,62 +59,4 @@ public class Unit : MonoBehaviour
         }
         _scrollBar.SetProgress((float)_HP / _HPMax);
     }
-
-    // 显示进化按钮
-    protected void onUnitUp(int petId)
-    {
-        if (petConfigID == petId && _BtnUp)
-        {
-            _BtnUp.gameObject.SetActive(true);
-        }
-    }
-
-    protected void onHideUnitUp(int petId)
-    {
-        if (petConfigID == petId && _BtnUp)
-        {
-            _BtnUp.gameObject.SetActive(false);
-        }
-    }
-
-    // 显示出售按钮
-    protected void onUnitSell(int petId)
-    {
-        if (petId == petConfigID && _BtnSell)
-        {
-            _BtnSell.gameObject.SetActive(true);
-        }
-    }
-
-    protected void onHideUnitSell()
-    {
-        if(_BtnSell != null)
-        {
-            _BtnSell.gameObject.SetActive(false);
-        }
-    }
-
-    public void onClickBtn()
-    {
-        if ( _BtnSell)
-        {
-            _BtnSell.gameObject.SetActive(true);
-        }
-    }
-    
-    public void onClickSell()
-    {
-        Debug.Log("出售");
-        BattleModel.Instance.removePlayerUnit(gameObject);
-        Destroy(gameObject);
-        EventManager.Instance.EventTrigger<int>(MyConstants.add_Point, _point);
-    }
-
-    public void onClickUp()
-    {
-        Debug.Log("升级");
-        _Level++;
-        EventManager.Instance.EventTrigger<int>(MyConstants.unit_up, petConfigID);
-    }
-
 }

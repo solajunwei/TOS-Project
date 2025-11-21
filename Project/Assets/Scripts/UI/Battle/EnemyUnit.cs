@@ -16,7 +16,7 @@ public class EnemyUnit : Unit
         get { return _PointNum; }
     }
 
-    public void OnDestroy()
+    protected override void OnDestroy()
     {
         gameObject.SetActive(false);
         gameObject.transform.DOKill();

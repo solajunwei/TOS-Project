@@ -8,9 +8,4 @@ public class Setting : UIView
     {
         Debug.Log("onClickSetting");
     }
-
-    public void onCloseSetting()
-    {
-        UIManager.Instance.HidePanel("Perfabs/Main/Setting");
-    }
 }

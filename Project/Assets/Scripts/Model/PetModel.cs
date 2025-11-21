@@ -5,6 +5,16 @@ using cfg;
 using Unity.VisualScripting;
 using UnityEngine;
 
+namespace Pet11
+{
+    public class PetInfo
+    {
+        public int PetId;  // 宠物id
+        public float _fDistance = 3f; // 宠物的攻击距离
+        public petConfig BaseInfo;  // 宠物的基本信息
+    }
+}
+
 
 public class PetModel : BaseManager<PetModel>
 {

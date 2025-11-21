@@ -157,7 +157,7 @@ public class Pet : UIView
 
     public void onClickBack()
     {
-        UIManager.Instance.HidePanel("Perfabs/Pet/Pet");
+        UIManager.Instance.GoBack();
     }
 
     public void onGoBattle()

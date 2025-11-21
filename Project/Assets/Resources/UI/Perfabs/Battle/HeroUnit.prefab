@@ -692,7 +692,7 @@ MonoBehaviour:
   _scrollBar: {fileID: 7912587003645365564}
   _BtnSell: {fileID: 2069871433174927596}
   _BtnUp: {fileID: 5464950663463459756}
-  uiRaycaster: {fileID: 9135980165790346855}
+  _canvas: {fileID: 618232849117790521}
 --- !u!1 &6070571881747685475
 GameObject:
   m_ObjectHideFlags: 0
