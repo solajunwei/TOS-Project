@@ -8,6 +8,8 @@ public class MyConstants
     // 开始战斗
     public const string start_game = "start_game";
 
+    public const string start_game_run = "start_game_run";
+
     // 单位死亡
     public const string Enemy_deal = "enemy deal";
 
@@ -53,4 +55,7 @@ class BattleConfig
     };
 
     public const int UPLEVELNEEDPETNUM = 3;
+
+    // 抽卡所需要的金币
+    public const int DRAWNUM = 5;
 }

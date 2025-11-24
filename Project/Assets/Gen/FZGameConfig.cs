@@ -11,31 +11,31 @@ using Luban;
 using SimpleJSON;
 
 
-namespace cfg.demo
+namespace cfg
 {
-public sealed partial class Reward : Luban.BeanBase
+public sealed partial class FZGameConfig : Luban.BeanBase
 {
-    public Reward(JSONNode _buf) 
+    public FZGameConfig(JSONNode _buf) 
     {
-        { if(!_buf["id"].IsNumber) { throw new SerializationException(); }  Id = _buf["id"]; }
-        { if(!_buf["count"].IsNumber) { throw new SerializationException(); }  Count = _buf["count"]; }
+        { if(!_buf["key"].IsString) { throw new SerializationException(); }  Key = _buf["key"]; }
+        { if(!_buf["value"].IsString) { throw new SerializationException(); }  Value = _buf["value"]; }
     }
 
-    public static Reward DeserializeReward(JSONNode _buf)
+    public static FZGameConfig DeserializeFZGameConfig(JSONNode _buf)
     {
-        return new demo.Reward(_buf);
+        return new FZGameConfig(_buf);
     }
 
     /// <summary>
-    /// id
+    /// 类型
     /// </summary>
-    public readonly int Id;
+    public readonly string Key;
     /// <summary>
-    /// 个数
+    /// 值
     /// </summary>
-    public readonly int Count;
+    public readonly string Value;
    
-    public const int __ID__ = -920121926;
+    public const int __ID__ = -207590968;
     public override int GetTypeId() => __ID__;
 
     public  void ResolveRef(Tables tables)
@@ -45,8 +45,8 @@ public sealed partial class Reward : Luban.BeanBase
     public override string ToString()
     {
         return "{ "
-        + "id:" + Id + ","
-        + "count:" + Count + ","
+        + "key:" + Key + ","
+        + "value:" + Value + ","
         + "}";
     }
 }

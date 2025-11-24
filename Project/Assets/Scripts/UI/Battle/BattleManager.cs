@@ -25,7 +25,6 @@ public class BattleManager : MonoBehaviour
     {
         UIManager.Instance.OpenView<BattleUI>("Perfabs/Battle/BattleBtns", E_UI_Layer.Mit);
         battlelInfo = BattleModel.Instance.CurBattleInfo;
-        CreateHero();
 
         path = new Vector3[]
         {
@@ -45,6 +44,9 @@ public class BattleManager : MonoBehaviour
         EventManager.Instance.AddEventListener<Vector3>(MyConstants.create_unit, CreateUnit);
         EventManager.Instance.AddEventListener(MyConstants.jump_next_round, updateNextRound);
         EventManager.Instance.AddEventListener(MyConstants.gameoverLevel, gameover);
+        EventManager.Instance.AddEventListener(MyConstants.start_game_run, OnStartGame);
+
+        
     }
 
     private void OnDestroy()
@@ -53,6 +55,7 @@ public class BattleManager : MonoBehaviour
         EventManager.Instance.RemoveEventListener<Vector3>(MyConstants.create_unit, CreateUnit);
         EventManager.Instance.RemoveEventListener(MyConstants.jump_next_round, updateNextRound);
         EventManager.Instance.RemoveEventListener(MyConstants.gameoverLevel, gameover);
+        EventManager.Instance.RemoveEventListener(MyConstants.start_game_run, OnStartGame);
     }
 
     public void gameover()
@@ -79,6 +82,12 @@ public class BattleManager : MonoBehaviour
         if (battlelInfo.isGameOver()) return;
         battlelInfo.removeEnemy(obj);
         Destroy(obj, 0.01f);
+    }
+
+    // ¿ªÊ¼ÓÎÏ·
+    public void OnStartGame()
+    {
+        CreateHero();
     }
 
     private void CreateHero()

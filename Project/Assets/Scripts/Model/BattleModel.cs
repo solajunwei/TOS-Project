@@ -29,10 +29,11 @@ namespace Battle
     public class BattleInfo
     {
         // 当前第几轮
-        private int round = 1; 
+        private int round = 0; 
         public int Round
         {
             get{return round;}
+            set{round = value;}
         }
 
         // 设置下一轮
@@ -264,6 +265,13 @@ public class BattleModel : BaseManager<BattleModel>
         get { return _PlayerList; }
     }
 
+    // 初始化轮数
+    public void initRound()
+    {
+        curBattleInfo.Round = 1;
+    }
+
+
     // 查看是否已经抽宠物已经达到最大值
     public bool checkDrawPetMax()
     {
@@ -297,7 +305,7 @@ public class BattleModel : BaseManager<BattleModel>
     /// <summary>
     /// 添加一个抽中的宠物
     /// </summary>
-    public GameObject addDrawPet(GameObject prefab, out int index)
+    public GameObject addDrawPet(out int index)
     {
         index = getDrawPetInIndex();
         if (index == -1)
@@ -307,7 +315,12 @@ public class BattleModel : BaseManager<BattleModel>
         }
 
         int petId = 11001; // TODO
-
+        GameObject prefab = Resources.Load<GameObject>("UI/Perfabs/Pet/PetIcon");
+        if (null == prefab)
+        {
+            Debug.LogError("Resources load PetIcon");
+            return null;
+        }
         GameObject obj = Object.Instantiate(prefab);
         PetUnit unit = obj.GetComponent<PetUnit>();
         unit.LoadPetInitialValue();
@@ -361,6 +374,7 @@ public class BattleModel : BaseManager<BattleModel>
         return ret;
     }
 
+    // 判断是否从蛋形状改编成宠物状态
     public void changePetState()
     {
         foreach(DrawPetInfo info in drawPetDic.Values)
@@ -449,6 +463,25 @@ public class BattleModel : BaseManager<BattleModel>
         return isShowUp;
     }
 
+    /// <summary>
+    /// 判断当前表格是否为宠物形态
+    /// </summary>
+    /// <param name="index">位置id</param>
+    /// <returns></returns>
+    public bool checkIsPetPersonState(int index)
+    {
+
+        if (drawPetDic.ContainsKey(index))
+        {
+            DrawPetInfo info = drawPetDic[index];
+            if(info.nPetState == PetState.PETPERSON)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     // 删除一个我方单位
     public void removePlayerUnit(GameObject player)

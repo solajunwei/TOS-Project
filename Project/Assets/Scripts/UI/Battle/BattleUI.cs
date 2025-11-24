@@ -5,15 +5,13 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using DG.Tweening;
 using System.Collections.Generic;
-using Battle;
-using Unity.VisualScripting;
-
-
+using User;
+using cfg;
+//using System.Numerics;
 
 public class BattleUI : UIView
 {
     public Image[] _iamges;
-    public GameObject _prefab;
     private GameObject _movePrefab;
 
     public GameObject _downObj;
@@ -21,6 +19,7 @@ public class BattleUI : UIView
     public GameObject _rightObj;
     public Button   _rightBtn;
     public Button _upBtn;
+    public Button _onStartBtn;
 
     private bool isDownClose = false;
     private bool isRightClose = false;
@@ -37,7 +36,7 @@ public class BattleUI : UIView
     private int _blood = 20;
 
     // 金币默认为0
-    private int _point = 0;
+    private int _point = UserModel.Instance.getUserPoint();
 
     // 是否已经点击了
     private bool _isClick = false;
@@ -54,7 +53,6 @@ public class BattleUI : UIView
 
         EventManager.Instance.AddEventListener(MyConstants.jump_next_round, updateNextRound);
         EventManager.Instance.AddEventListener(MyConstants.home_attack, updateLeft);
-        EventManager.Instance.AddEventListener<GameObject>(MyConstants.Enemy_deal, EnemyDeal);
         EventManager.Instance.AddEventListener<int>(MyConstants.unit_up, onUnitUp);
         EventManager.Instance.AddEventListener<int>(MyConstants.unit_show_can_up, onShowUnitUp);
         EventManager.Instance.AddEventListener<int>(MyConstants.unit_hide_can_up, onHideUnitUp);
@@ -64,7 +62,6 @@ public class BattleUI : UIView
     {
         EventManager.Instance.RemoveEventListener(MyConstants.jump_next_round, updateNextRound);
         EventManager.Instance.RemoveEventListener(MyConstants.home_attack, updateLeft);
-        EventManager.Instance.RemoveEventListener<GameObject>(MyConstants.Enemy_deal, EnemyDeal);
         EventManager.Instance.RemoveEventListener<int>(MyConstants.unit_up, onUnitUp);
         EventManager.Instance.RemoveEventListener<int>(MyConstants.unit_show_can_up, onShowUnitUp);
         EventManager.Instance.RemoveEventListener<int>(MyConstants.unit_hide_can_up, onHideUnitUp);
@@ -94,9 +91,11 @@ public class BattleUI : UIView
                 {
                     if (result.gameObject == _iamges[i].gameObject)
                     {
-                        Debug.Log("鼠标按下位置在目标Image中！");
-                        _isClick = true;
-                        break; // 找到后退出循环
+                        if (BattleModel.Instance.checkIsPetPersonState(i))
+                        {
+                            _isClick = true;
+                            break; // 找到后退出循环
+                        }
                     }
                 }
             }
@@ -111,14 +110,44 @@ public class BattleUI : UIView
         // 鼠标抬起
         if (Input.GetMouseButtonUp(0) && _movePrefab)
         {
-            EventManager.Instance.EventTrigger<Vector3>(MyConstants.create_unit, _movePrefab.transform.position);
+            _isClick = false;
+
+            Transform parent = _iamges[0].transform.parent;
+            bool isIn = IsMouseUpInImageRect((RectTransform)parent);
+         
+            // 如果在image中，则取消
+            if (!isIn)
+            {
+                EventManager.Instance.EventTrigger<Vector3>(MyConstants.create_unit, _movePrefab.transform.position);
+            }
+            
             if (_movePrefab)
             {
                 Destroy(_movePrefab);
                 _movePrefab = null;
             }
-            _isClick = false;
         }
+    }
+
+     /// <summary>
+    /// 判断鼠标抬起位置是否在Image的矩形范围内（仅矩形，不考虑遮罩/裁剪）
+    /// </summary>
+    private bool IsMouseUpInImageRect(RectTransform rectTrans)
+    {
+        Canvas canvas = UIManager.Instance.UICanvas;
+
+        // 1. 将鼠标抬起的屏幕坐标转换为Image本地坐标系的坐标
+        Vector2 localMousePos;
+        bool isConvertSuccess = RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            rectTrans,                          // 目标Image的RectTransform
+            Input.mousePosition,                // 鼠标抬起的屏幕坐标
+            canvas.worldCamera, // 适配Canvas渲染模式
+            out localMousePos                   // 输出转换后的本地坐标
+        );
+
+        // 2. 转换失败直接返回false；转换成功则判断是否在矩形内
+        if (!isConvertSuccess) return false;
+        return rectTrans.rect.Contains(localMousePos);
     }
 
     private void OnMouseMoveSel()
@@ -141,7 +170,13 @@ public class BattleUI : UIView
             // 应用坐标到 UI 元素（例如移动一个按钮到鼠标位置）
             if (_movePrefab == null)
             {
-                _movePrefab = Instantiate(_prefab, gameObject.transform);
+                GameObject prefab = Resources.Load<GameObject>("UI/Perfabs/Pet/PetIcon");
+                if (null == prefab)
+                {
+                    Debug.LogError("Resources load PetIcon");
+                    return;
+                }
+                _movePrefab = Instantiate(prefab, gameObject.transform);
                 _movePrefab.transform.localRotation = Quaternion.identity;
                 _movePrefab.transform.localScale = Vector3.one;
             }
@@ -165,25 +200,29 @@ public class BattleUI : UIView
         _BloodText.text = _blood.ToString();
     }
 
-    // 获取金币
-    public void EnemyDeal(GameObject obj)
-    {
-        EnemyUnit enemyUnit = obj.GetComponent<EnemyUnit>();
-        _point += enemyUnit.PointNum;
-        _PointText.text = _point.ToString();
-    }
 
     public void onAddPoint(int point)
     {
         _point += point;
         _PointText.text = _point.ToString();
+        UserModel.Instance.AddPoint(point);
     }
 
     // 抽卡
     public void Draw()
     {
+        //GameConfig.Instance.getTables().GetType("TbFZGameConfig");
+        
+        //cfg.FZGameConfig config = GameConfig.Instance.getTables().TbFZGameConfig.Get("DrawPoint");
+
+        if(BattleConfig.DRAWNUM > UserModel.Instance.getUserPoint())
+        {
+
+            return;
+        }
+
         // 生成一个宠物蛋
-        GameObject obj = BattleModel.Instance.addDrawPet(_prefab, out int index);
+        GameObject obj = BattleModel.Instance.addDrawPet(out int index);
         if(obj == null || index == -1)
         {
             return;
@@ -289,6 +328,32 @@ public class BattleUI : UIView
         {
             onShowUnitUp();
         }
+    }
+
+    // 开始游戏
+    public void onStartGame()
+    {
+        _onStartBtn.gameObject.SetActive(false);
+        
+
+        GameObject prefab = Resources.Load<GameObject>("UI/Perfabs/Tips/EnterObj");
+        if (null == prefab)
+        {
+            Debug.LogError("Resources load EnterObj");
+            return;
+        }
+
+        GameObject obj = Instantiate(prefab);
+        obj.transform.localPosition = new Vector3(-1134, 0, 0);
+        obj.transform.localRotation = Quaternion.identity;
+        obj.transform.localScale = Vector3.one;
+        BattleModel.Instance.initRound();
+
+        int roundCount = BattleModel.Instance.getRoundCount();
+        int round = BattleModel.Instance.getCurRound();
+        _RoundText.text = round + "/" + roundCount;
+        obj.transform.SetParent(gameObject.transform, false);
+        EventManager.Instance.EventTrigger(MyConstants.start_game_run);
     }
 #endregion
 
